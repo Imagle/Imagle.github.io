@@ -1,7 +1,7 @@
 ---
 layout: index
-title: 天外天
-tagline: 天外有天，山外有山
+title: Jerry's Home
+tagline: Reading, Learning, Thinking
 links:
   - url: "http://blog.felixpy.com"
     name: "Felix的个人博客"
@@ -36,7 +36,7 @@ links:
 
     <div class="main-container shadow">
       <div class="mainbody">
-        {% include ever/pagination %}
+        {% include Jerry/pagination %}
       </div>
     </div>
 
@@ -69,7 +69,7 @@ links:
         <h3>Tags</h3>
         <div class="tag_box">
         {% assign tags_list = site.tags %}
-        {% include ever/tags_list %}
+        {% include Jerry/tags_list %}
         </div>
         {% endunless %}
       </div>
@@ -81,7 +81,7 @@ links:
         <h3>Links</h3>
         <ul>
         {% assign links = page.links %}
-        {% include ever/links %}
+        {% include Jerry/links %}
         </ul>
         {% endif %}
       </div>
