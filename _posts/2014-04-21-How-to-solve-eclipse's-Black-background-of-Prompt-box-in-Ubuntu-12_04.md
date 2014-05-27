@@ -14,11 +14,13 @@ tags: [eclipse, Ubuntu12.04, background]
 当我们在ubuntu下面使用eclipse编程的时候，需要查看相应的代码的结构等信息，但是当我们把鼠标放到我们想看的代码上面的时候，出现了一个大黑框，然后鼠标点击相应的块才能看见相应的文字，其他的全是黑色无法看见，导致心里很不爽，如下图：
 ![picture:eclipse-linux-01][1]
 
+
 **问题分析:**
 
-出现这个问题的原因主要是由于Ubuntu（12.04）中默认的主题为Ambiance，这个主题的tooltip默认设置前景(foreground)色为黑色(#ffffff)，背景(background)色为白色(#000000)，所以才出现这个问题。当然一般我们解决这个问题的方法是更换主题就好了，但是这样做不能根本的解决问题，下面我们介绍一种能够不更换主题，手工修改的解决方法。
+出现这个问题的原因主要是由于Ubuntu（12.04）中默认的主题为Ambiance，这个主题的tooltip默认设置前景(foreground)色为黑色(#ffffff)，背景(background)色为白色(#000000)，所以才出现这个问题。当然一般我们解决这个问题的方法是更换主题就好了，但是这样做不能根本的解决问题，下面我们介绍一种能够不更换主题，手工修改的解决方法。 
 
-**解决方法：**
+
+**解决方法：**  
 
 *   1\. 进入系统用户主题目录
     : `$ cd /usr/share/themes/`
@@ -30,8 +32,8 @@ tags: [eclipse, Ubuntu12.04, background]
     : `$ sudo vi gtk-2.0/gtkrc`
     ![picture:eclipse-linux-02][2]
 
-*   4\. 修改tooltip的前景色(tooptip_fg_color)和背景色(tooptip_bg_color)
-    tooltip_fg_color:#000000
+*   4\. 修改tooltip的前景色(tooptip_fg_color)和背景色(tooptip_bg_color)  
+    tooltip_fg_color:#000000  
     tooltip_bg_color:#c5e0b3 (该颜色模式RGB为：R:197, G:224, B:179; 若想改为windows下面的淡黄色则为#f2edbc)
 
     注：若上述gitrc文件中没有tooltip的配置，则可以自己添加上述配置。
