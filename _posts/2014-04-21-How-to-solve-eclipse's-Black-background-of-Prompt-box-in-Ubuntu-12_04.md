@@ -16,20 +16,19 @@ tags: [eclipse, Ubuntu12.04, background]
 **问题分析:**  
 出现这个问题的原因主要是由于Ubuntu（12.04）中默认的主题为Ambiance，这个主题的tooltip默认设置前景(foreground)色为黑色(#ffffff)，背景(background)色为白色(#000000)，所以才出现这个问题。当然一般我们解决这个问题的方法是更换主题就好了，但是这样做不能根本的解决问题，下面我们介绍一种能够不更换主题，手工修改的解决方法。 
 
-
 **解决方法：**  
 
--   1\. 进入系统用户主题目录
+- 1\. 进入系统用户主题目录
     : `$ cd /usr/share/themes/`
 
--   2\. 选择使用的主题，进入该主题目录，以Ambiance为例
+- 2\. 选择使用的主题，进入该主题目录，以Ambiance为例
     : `$ cd Ambiance`
 
--   3\. 修改主题配置gtk-2.0/gtkrc
+- 3\. 修改主题配置gtk-2.0/gtkrc
     : `$ sudo vi gtk-2.0/gtkrc`
     ![picture:eclipse-linux-02][2]
 
--   4\. 修改tooltip的前景色(tooptip_fg_color)和背景色(tooptip_bg_color)  
+- 4\. 修改tooltip的前景色(tooptip_fg_color)和背景色(tooptip_bg_color)  
     `tooltip_fg_color:#000000`  
     `tooltip_bg_color:#c5e0b3` (该颜色模式RGB为：R:197, G:224, B:179; 若想改为windows下面的淡黄色则为#f2edbc)
 
@@ -37,7 +36,7 @@ tags: [eclipse, Ubuntu12.04, background]
     ![picture:eclipse-linux-03][3]
 
 
--   5\. 保存退出，并且在系统设置--->外观--->主题的中切换下主题，然后在切换回来，就Okay了，如下图：
+- 5\. 保存退出，并且在系统设置--->外观--->主题的中切换下主题，然后在切换回来，就Okay了，如下图：
     ![picture:eclipse-linux-04][4]
 
 [1]:http://imagle.github.io/static/img/eclipse-linux-01.png 
