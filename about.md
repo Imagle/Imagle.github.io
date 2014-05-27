@@ -12,6 +12,7 @@ group: "navigation"
 在读CS硕士一枚，爱好广泛，喜欢技术
 熟悉C语言，会用C++，能写Java
 
+***
 
 ### 关于网站
 
@@ -24,12 +25,15 @@ group: "navigation"
 * [Twitter Bootstrap][]
 * [jQuery][]
 
+***
+
 ### 联系我？
 
-我的邮箱：wangrq2008(at)gmail.com  
-新浪微博: [王Jerry王][weibo]   
-github：[Imagle][github]，我的一些代码可以在这里找到   
-微信公众号: 分享技术之美(ID:swalge) ![weixin][photo]
+_我的邮箱_：wangrq2008(at)gmail.com  
+_新浪微博_: [王Jerry王][weibo]   
+_github_：[Imagle][github]，我的一些代码可以在这里找到   
+_微信公众号_: 分享技术之美(ID:swalge)  
+    ![weixin][photo]
 
 [weibo]: http://weibo.com/rqqrwang
 [github]: http://github.com/Imagle
