@@ -26,12 +26,14 @@ group: "navigation"
 
 ### 联系我？
 
-我的邮箱：wangrq2008(at)gmail.com
-新浪微博: [王Jerry王][weibo] 
-github：[Imagle][github]，我的一些代码可以在这里找到  
+我的邮箱：wangrq2008(at)gmail.com  
+新浪微博: [王Jerry王][weibo]   
+github：[Imagle][github]，我的一些代码可以在这里找到   
+微信公众号: 分享技术之美(ID:swalge) ![weixin][photo]
 
 [weibo]: http://weibo.com/rqqrwang
 [github]: http://github.com/Imagle
 [Jekyll Bootstrap]: http://jekyllbootstrap.com "The Definitive Jekyll Blogging Framework"
 [Twitter Bootstrap]: http://twitter.github.com/bootstrap/
 [jQuery]: http://jquery.com
+[photo]: http://Imagle.github.io/static/img/photo.jpg
