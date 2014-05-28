@@ -16,16 +16,16 @@ tags: [堆, C++, STL源码]
 ![picture:build max heap][1]  
 从图中可以看出每插入一个元素，调整后都是一个最大堆，而且是插入到最后一个上(假设数组是可以动态增长的)，这样是从下往上进行调整(percolate up)，这样的调整算法叫插入法, 下面来看看插入法的代码实现：  
     <pre>
-            void insert_heap(int a[], int i){
-                while(i>0){
-                    int j=(i-1)/2;
-                    if(a[i] < a[j]){
-                         swap(a[i], a[j]);
-                         i=j;
-                    }
-                    else break;
+        void insert_heap(int a[], int i){
+            while(i>0){
+                int j=(i-1)/2;
+                if(a[i] < a[j]){
+                    swap(a[i], a[j]);
+                    i=j;
                 }
+                else break;
             }
+        }
     </pre>  
 
 2\. __堆的筛选法__  
