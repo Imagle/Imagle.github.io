@@ -138,6 +138,7 @@ sort_heap就是对堆进行排序。 从pop_heap得之，它每次可获得heap�
 
 5\.__make_heap__  
 make_heap用来将一段现有的数据转化为一个heap，下面是具体实现：  
+
     template <class RandomAccessIterator, class Compare>
     inline void make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
         __make_heap(first, last, comp, value_type(first), distance_type(first));
@@ -154,11 +155,13 @@ make_heap用来将一段现有的数据转化为一个heap，下面是具体实�
             parent--;
         }
     }  
+
 可以看见，该算法是从len/2开始调整，一直到parent为0，这就是我在上面第一部分的筛选法时候举的例子。  
 注： 以上所列出的STL算法均为SGI STL并且，列出的均为不能只能排序规则的一组。  
 
 #### 三、STL中堆的应用  
 虽然stl中没有提供堆这个数据结构，但是priority queue的内部确是由堆来实现的。priority queue允许用户以任何次序将任何元素推入容器内，但取出的时候一定是从优先权最高的元素开始取。binary heap正好具有这样的特性。为了平衡各个操作的时间复杂度和实现的复杂度，binary heap适合作为priority queue的底层机制。下面贴一个priority_queue的完整实现代码，请注意在几个构造函数中都使用了make_heap算法，在push函数中使用了push_heap算法，在pop中使用了pop_heap算法：  
+
     #ifndef __STL_LIMITED_DEFAULT_TEMPLATES
     template <class T, class Sequence = vector<T>, 
               class Compare = less<typename Sequence::value_type> >
@@ -218,6 +221,7 @@ make_heap用来将一段现有的数据转化为一个heap，下面是具体实�
     __STL_END_NAMESPACE
     
     #endif /* __SGI_STL_INTERNAL_QUEUE_H */
+
 
 ---------------------------------------------------------------------------------------
 如果你觉得本篇对你有收获，请帮顶。
