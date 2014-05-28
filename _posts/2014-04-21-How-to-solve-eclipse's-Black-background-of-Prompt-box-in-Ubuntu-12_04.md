@@ -37,7 +37,16 @@ tags: [eclipse, Ubuntu12.04, background]
 
 
 - 5\. 保存退出，并且在系统设置--->外观--->主题的中切换下主题，然后在切换回来，就Okay了，如下图：
-    ![picture:eclipse-linux-04][4]
+    ![picture:eclipse-linux-04][4]  
+
+
+---------------------------------------------------------------------------------------
+如果你觉得本篇对你有收获，请帮顶。
+另外，我本人开通了微信公众号--__分享技术之美__，我会不定期的分享一些我学习的东西.
+你可以搜索公众号：__swalge__ 或者扫描下方二维码关注我  
+![关注][photo]  
+[photo]:http://imagle.github.io/static/img/photo.jpg
+
 
 [1]:http://imagle.github.io/static/img/eclipse-linux-01.png 
 [2]:http://imagle.github.io/static/img/eclipse-linux-02.png
