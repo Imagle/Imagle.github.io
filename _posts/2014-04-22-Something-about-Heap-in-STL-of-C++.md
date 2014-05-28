@@ -138,9 +138,93 @@ sort_heap就是对堆进行排序。 从pop_heap得之，它每次可获得heap�
 
 5\.__make_heap__  
 make_heap用来将一段现有的数据转化为一个heap，下面是具体实现：  
+    template <class RandomAccessIterator, class Compare>
+    inline void make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
+        __make_heap(first, last, comp, value_type(first), distance_type(first));
+    }
+    template <class RandomAccessIterator, class Compare, class T, class Distance>
+    void __make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp, T*, Distance*) {
+        if (last - first < 2) return; // 长度为0或1，就返回；
+        Distance len = last - first;
+        //找到第一个调整的节点
+        Distance parent = (len - 2)/2;    
+        while (true) {
+            __adjust_heap(first, parent, len, T(*(first + parent)), comp);
+            if (parent == 0) return;
+            parent--;
+        }
+    }  
+可以看见，该算法是从len/2开始调整，一直到parent为0，这就是我在上面第一部分的筛选法时候举的例子。  
+注： 以上所列出的STL算法均为SGI STL并且，列出的均为不能只能排序规则的一组。  
 
+#### 三、STL中堆的应用  
+虽然stl中没有提供堆这个数据结构，但是priority queue的内部确是由堆来实现的。priority queue允许用户以任何次序将任何元素推入容器内，但取出的时候一定是从优先权最高的元素开始取。binary heap正好具有这样的特性。为了平衡各个操作的时间复杂度和实现的复杂度，binary heap适合作为priority queue的底层机制。下面贴一个priority_queue的完整实现代码，请注意在几个构造函数中都使用了make_heap算法，在push函数中使用了push_heap算法，在pop中使用了pop_heap算法：  
+    #ifndef __STL_LIMITED_DEFAULT_TEMPLATES
+    template <class T, class Sequence = vector<T>, 
+              class Compare = less<typename Sequence::value_type> >
+    #else
+    template <class T, class Sequence, class Compare>
+    #endif
+    class  priority_queue {
+    public:
+      typedef typename Sequence::value_type value_type;
+      typedef typename Sequence::size_type size_type;
+      typedef typename Sequence::reference reference;
+      typedef typename Sequence::const_reference const_reference;
+    protected:
+      Sequence c;
+      Compare comp;
+    public:
+      priority_queue() : c() {}
+      explicit priority_queue(const Compare& x) :  c(), comp(x) {}
+    
+    #ifdef __STL_MEMBER_TEMPLATES
+      template <class InputIterator>
+      priority_queue(InputIterator first, InputIterator last, const Compare& x)
+        : c(first, last), comp(x) { make_heap(c.begin(), c.end(), comp); }
+      template <class InputIterator>
+      priority_queue(InputIterator first, InputIterator last) 
+        : c(first, last) { make_heap(c.begin(), c.end(), comp); }
+    #else /* __STL_MEMBER_TEMPLATES */
+      priority_queue(const value_type* first, const value_type* last, 
+                     const Compare& x) : c(first, last), comp(x) {
+        make_heap(c.begin(), c.end(), comp);
+      }
+      priority_queue(const value_type* first, const value_type* last) 
+        : c(first, last) { make_heap(c.begin(), c.end(), comp); }
+    #endif /* __STL_MEMBER_TEMPLATES */
+    
+      bool empty() const { return c.empty(); }
+      size_type size() const { return c.size(); }
+      const_reference top() const { return c.front(); }
+      void push(const value_type& x) {
+        __STL_TRY {
+          c.push_back(x); 
+          push_heap(c.begin(), c.end(), comp);
+        }
+        __STL_UNWIND(c.clear());
+      }
+      void pop() {
+        __STL_TRY {
+          pop_heap(c.begin(), c.end(), comp);
+          c.pop_back();
+        }
+        __STL_UNWIND(c.clear());
+      }
+    };
+    
+    // no equality is provided
+    
+    __STL_END_NAMESPACE
+    
+    #endif /* __SGI_STL_INTERNAL_QUEUE_H */
 
-[1]:http://imagle.github.io/static/img/eclipse-linux-01.png 
-[2]:http://imagle.github.io/static/img/eclipse-linux-02.png
-[3]:http://imagle.github.io/static/img/eclipse-linux-03.png
-[4]:http://imagle.github.io/static/img/eclipse-linux-04.png
+---------------------------------------------------------------------------------------
+如果你觉得本篇对你有收获，请帮顶。
+另外，我本人开通了微信公众号--分享技术之美，我会不定期的分享一些我学习的东西.
+你可以搜索公众号：swalge 或者扫描下方二维码关注我  
+![关注][photo]  
+
+[1]:http://imagle.github.io/static/img/heap1.png 
+[2]:http://imagle.github.io/static/img/heap2.png
+[photo]:http://imagle.github.io/static/img/photo.jpg
