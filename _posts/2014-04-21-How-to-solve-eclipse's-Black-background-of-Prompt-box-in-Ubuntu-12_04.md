@@ -45,10 +45,10 @@ tags: [eclipse, Ubuntu12.04, background]
 另外，我本人开通了微信公众号--__分享技术之美__，我会不定期的分享一些我学习的东西.
 你可以搜索公众号：__swalge__ 或者扫描下方二维码关注我  
 ![关注][photo]  
-[photo]:http://imagle.github.io/static/img/photo.jpg
 
 
 [1]:http://imagle.github.io/static/img/eclipse-linux-01.png 
 [2]:http://imagle.github.io/static/img/eclipse-linux-02.png
 [3]:http://imagle.github.io/static/img/eclipse-linux-03.png
 [4]:http://imagle.github.io/static/img/eclipse-linux-04.png
+[photo]:http://imagle.github.io/static/img/photo.jpg
