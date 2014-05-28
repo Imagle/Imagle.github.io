@@ -229,6 +229,7 @@ make_heap用来将一段现有的数据转化为一个heap，下面是具体实�
 你可以搜索公众号：__swalge__ 或者扫描下方二维码关注我  
 ![关注][photo]  
 
+
 [1]:http://imagle.github.io/static/img/heap1.png 
 [2]:http://imagle.github.io/static/img/heap2.png
 [photo]:http://imagle.github.io/static/img/photo.jpg
