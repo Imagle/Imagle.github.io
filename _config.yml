@@ -5,10 +5,10 @@ permalink: /:year/:month/:day/:title
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 pygments: false
-#markdown: kramdown
-markdown: redcarpet 
-redcarpet: 
-    extensions: ["tables"]
+markdown: kramdown
+#markdown: redcarpet 
+#redcarpet: 
+#    extensions: ["tables"]
 paginate: 6
 description_length: 200
 
