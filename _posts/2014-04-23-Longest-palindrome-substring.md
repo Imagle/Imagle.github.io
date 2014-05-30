@@ -26,7 +26,7 @@ j:  与 i 关于 idx 对称的位置
 i | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  
 T | ^ | # | a | # | b | # | b | # | a | # | $  
 a | 0 | 0 | 1 | 0 | 1 | 4 | 1 | 0 | 1 | 0  
-idx | |   |   |   |   | R |   |
+  |   |   |   |   |   |idx|   |   |   | R |   |
 
 此算法的关键之处在于: 当 i<R时，a[i] 有如下简便计算公式` a[i] = min(R-i, a[j])`:  
               
@@ -34,7 +34,7 @@ idx | |   |   |   |   | R |   |
 ![picture:palindrome][1]  
 
 - B. 当 R - i < a[j] 的时候，以T[j]为中心的回文子串不一定完全包含于以T[mid]为中心的回文子串中，但是基于对称性可知，下图中两个绿框所包围的部分是相同的，也就是说以S[i]为中心的回文子串，其向右至少会扩张到 R 的位置，也就是说 a[i] >= R-i。至于R之后的部分是否对称，就只能老老实实去匹配了。  
-![picture:palindrome][1]  
+![picture:palindrome]2]  
 
 ##### 3. 得到所求字符串  
 
@@ -99,6 +99,6 @@ __参考文章__:
 ![关注][photo]  
 
 
-[1]:http://imagle.github.io/static/img/heap1.png 
-[2]:http://imagle.github.io/static/img/heap2.png
+[1]:http://imagle.github.io/static/img/palindromicsubstring-01.png 
+[2]:http://imagle.github.io/static/img/palindromicsubstring-02.png
 [photo]:http://imagle.github.io/static/img/photo.jpg
