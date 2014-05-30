@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Longest Palindromic Substring-----最长回文子串"
+title: "最长回文子串的O(n)算法"
 tagline: "Longest Palindromic Substring-----最长回文子串"
 description: "Longest Palindromic Substring-----最长回文子串"
 tags: [算法, C++, 最长回文子串，Palindromic]
@@ -30,16 +30,16 @@ a | 0 | 0 | 1 | 0 | 1 | 4 | 1 | 0 | 1 | 0
 
 此算法的关键之处在于: 当 i<R时，a[i] 有如下简便计算公式`a[i] = min(R-i, a[j])`:  
               
-- A. 当`R - i > a[j]`的时候，以T[j]为中心的回文子串包含在以T[mid]为中心的回文子串中，由于 i 和 j 对称，以T[i]为中心的回文子串必然包含在以T[mid]为中心的回文子串中，所以必有 a[i] = a[j], 如下图：此时a[i] = a[j] = 1;  
+- A. 当`R - i > a[j]`的时候，以T[j]为中心的回文子串包含在以T[mid]为中心的回文子串中，由于 i 和 j 对称，以T[i]为中心的回文子串必然包含在以T[mid]为中心的回文子串中，所以必有 `a[i] = a[j]`, 如下图：此时`a[i] = a[j] = 1;`  
 ![picture:palindrome][1]  
 
-- B. 当 `R - i < a[j]` 的时候，以T[j]为中心的回文子串不一定完全包含于以T[mid]为中心的回文子串中，但是基于对称性可知，下图中两个绿框所包围的部分是相同的，也就是说以S[i]为中心的回文子串，其向右至少会扩张到 R 的位置，也就是说 a[i] >= R-i。至于R之后的部分是否对称，就只能老老实实去匹配了。  
+- B. 当 `R - i < a[j]` 的时候，以T[j]为中心的回文子串不一定完全包含于以T[mid]为中心的回文子串中，但是基于对称性可知，下图中两个绿框所包围的部分是相同的，也就是说以S[i]为中心的回文子串，其向右至少会扩张到 R 的位置，也就是说 `a[i] >= R-i`。至于R之后的部分是否对称，就只能老老实实去匹配了。  
 ![picture:palindrome][2]  
 
 ##### 3. 得到所求字符串  
 
-找出 p[ ] 数组中最大的值及其下标，记为max和index。  
-所求字符串为string(s, (index-1-max)/2, max)  
+找出 `a[ ]` 数组中最大的值及其下标，记为`max`和`index`。  
+所求字符串为`string(s, (index-1-max)/2, max)`  
 
 
 ##### 4, 算法实现  
