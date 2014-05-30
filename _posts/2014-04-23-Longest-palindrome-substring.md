@@ -3,7 +3,7 @@ layout: post
 title: "Longest Palindromic Substring-----最长回文子串"
 tagline: "Longest Palindromic Substring-----最长回文子串"
 description: "Longest Palindromic Substring-----最长回文子串"
-tags: [算法, C++, 最长回文子串，Palindromic]
+tags: [算法, C++, 最长回文子串, Palindromic]
 ---
 {% include JB/setup %}
 
