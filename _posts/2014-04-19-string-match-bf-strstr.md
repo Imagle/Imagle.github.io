@@ -15,14 +15,15 @@ tags: [strstr, brute force, algorithm]
 
 #### 一、算法简介
 
-BF(Brute Force)算法，应该很容易写出来，下面先给出伪码：  
+BF(Brute Force)算法，应该很容易写出来，下面先给出伪码： 
+
  - 1\. 首先设定 S 和 T 的起始比较下标 i 和 j；
  - 2\. 循环直到 i+m>n 或者T中的字符都比较完(j==m)
  - - 2.1 如果S[i]==T[j], 继续比较S和T的下一个字符，否则
  - - 2.2 将 i 和 j 回溯，准备下一轮比较
  - 3\. 如果T中的字符都比较完(j==m)，则返回比较的起始下标
  -     否则返回-1，表示匹配失败  
-   
+
 
 #### 二、算法实现  
 
@@ -53,6 +54,7 @@ BF算法的确定就是一遇到比较失败的时候就需要回退到前面重
   
 #### 五、标准库为啥要采用BF而不采用KMP，BM喃？  
 打开上面StackOverflow的链接，就能见着答案，我这里把英文贴出来，为防止有些童鞋一见English就头大，大概翻译了下。  
+
 > The more advanced string search algorithms have a non-trivial setup time. If you are doing a once-off string search involving a not-too-large target string, you will find that you spend more time on the setup than you save during the string search.And even just testing the lengths of the target and search string is not going to give a good answer as to whether it is "worth it" to use an advanced algorithm. The actual speedup you get from (say) Boyer-Moore depends on the values of the strings; i.e. the character patterns.  
 The Java implementors have take the pragmatic approach. They cannot guarantee that an advanced algorithm will give better performance, either on average, or for specific inputs. Therefore they have left it to the programmer to deal with ... where necessary.   
  大概意思就是，像KMP，BM这些高级算法的会有预处理时间和会消耗一些空间，在处理一些不是非常大的字符串的时候，时间不会有太大优势，而且还会占用一些空间。   
@@ -63,6 +65,6 @@ The Java implementors have take the pragmatic approach. They cannot guarantee th
 ![关注][photo]  
 
 
-[example_01]:http://imagle.github.io/static/img/bf-strstr-01.jpg
+[example-01]:http://imagle.github.io/static/img/bf-strstr-01.jpg
 [link-01]:http://stackoverflow.com/questions/23146845/indexof-method-of-string-class-in-jdk-is-implemented-by-using-bf-why-not-use-km?noredirect=1#comment35393536_23146845
 [photo]:http://imagle.github.io/static/img/photo.jpg
