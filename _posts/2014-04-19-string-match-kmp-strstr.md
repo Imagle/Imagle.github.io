@@ -7,14 +7,14 @@ tags: [strstr, kmp, algorithm]
 ---
 {% include JB/setup %}
 
-近日，一同学面试被问到字符串匹配算法，结果由于他使用了暴力法，直接就跪了(现在想想这样的面试官真的是不合格的，陈皓的一篇文章说的很好，[点击阅读][http://coolshell.cn/articles/8138.html])。字符串匹配方法大概有：BF(暴力破解法), 简化版的BM，KMP，BM，一般情况下，大家听说最多的应该就是KMP算法了。之前学习过，由于时间间隔比较大，记不太清楚了，今天上网查了下，发现写KMP的文章是不少，但是真正清晰简洁就没有了(july的文章太繁琐)，所以自己就研究了一晚上，弄清楚了kmp的计算过程，也就在此分享下。
+近日，一同学面试被问到字符串匹配算法，结果由于他使用了暴力法，直接就跪了(现在想想这样的面试官真的是不合格的，陈皓的一篇文章说的很好，[点击阅读][chhao])。字符串匹配方法大概有：BF(暴力破解法), 简化版的BM，KMP，BM，一般情况下，大家听说最多的应该就是KMP算法了。之前学习过，由于时间间隔比较大，记不太清楚了，今天上网查了下，发现写KMP的文章是不少，但是真正清晰简洁就没有了(july的文章太繁琐)，所以自己就研究了一晚上，弄清楚了kmp的计算过程，也就在此分享下。
 
-首先，如果你现在完全不知道KMP是个神马玩意，请先阅读 阮一峰 的[《字符串匹配的KMP算法》][http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html]。
+首先，如果你现在完全不知道KMP是个神马玩意，请先阅读 阮一峰 的[《字符串匹配的KMP算法》][ruan]。
 
 KMP算法最难理解的是就是next数组的计算过程，在此分享下我所理解的kmp算法以及next数组的计算过程(如果看前面理论比较头大，可以先看后面例子的计算过程，在回过头来看理论就会释怀)：  
 
 #### 一、next数组的计算过程:  
-__申明__:next数组下标从0算起, 定义next[0]=-1, next[1]=0; 模式串记为T[ ]
+__申明__:  next数组下标从0算起, 定义next[0]=-1, next[1]=0; 模式串记为T[ ]
 假如求 T中 j+1 位的next[j+1]：  
 将其前一位(模式字符)的内容与其前一位的next值(next[j])的内容(T[next[j]])进行比较：
 
@@ -102,3 +102,5 @@ __申明__:next数组下标从0算起, 定义next[0]=-1, next[1]=0; 模式串记
 [example_03]:http://imagle.github.io/static/img/kmp03.jpg
 [link-4]:http://blog.csdn.net/swagle/article/details/24112823
 [photo]:http://imagle.github.io/static/img/photo.jpg
+[ruan]:http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html
+[chhao]:http://coolshell.cn/articles/8138.html
