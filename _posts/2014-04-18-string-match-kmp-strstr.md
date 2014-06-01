@@ -100,7 +100,7 @@ __申明__:  next数组下标从0算起, 定义next[0]=-1, next[1]=0; 模式串�
 [example_01]:http://imagle.github.io/static/img/kmp01.jpg
 [example_02]:http://imagle.github.io/static/img/kmp02.jpg
 [example_03]:http://imagle.github.io/static/img/kmp03.jpg
-[link-4]:http://blog.csdn.net/swagle/article/details/24112823
+[link-4]:http://imagle.github.io/2014/04/19/string-match-bf-strstr/
 [photo]:http://imagle.github.io/static/img/photo.jpg
 [ruan]:http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html
 [chhao]:http://coolshell.cn/articles/8138.html
