@@ -1,3 +1,12 @@
+---
+layout: post
+title: "字符串匹配之KMP---全力解析"
+tagline: "strstr implement with kmp algorithm"
+description: "strstr implement with kmp algorithm"
+tags: [strstr, kmp, algorithm]
+---
+{% include JB/setup %}
+
 近日，一同学面试被问到字符串匹配算法，结果由于他使用了暴力法，直接就跪了(现在想想这样的面试官真的是不合格的，陈皓的一篇文章说的很好，点击阅读)。字符串匹配方法大概有：BF(暴力破解法), 简化版的BM，KMP，BM，一般情况下，大家听说最多的应该就是KMP算法了。之前学习过，由于时间间隔比较大，记不太清楚了，今天上网查了下，发现写KMP的文章是不少，但是真正清晰简洁就没有了(july的文章太繁琐)，所以自己就研究了一晚上，弄清楚了kmp的计算过程，也就在此分享下。
 
 首先，如果你现在完全不知道KMP是个神马玩意，请先阅读 阮一峰 的《字符串匹配的KMP算法》。
