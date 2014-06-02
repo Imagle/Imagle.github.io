@@ -89,7 +89,7 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : WangJerry
+      short_name : wangjerry
     livefyre :
       site_id : 12j
     intensedebate :
