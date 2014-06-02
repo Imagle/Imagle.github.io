@@ -65,6 +65,6 @@ The Java implementors have take the pragmatic approach. They cannot guarantee th
 ![关注][photo]  
 
 
-[example-01]:http://imagle.github.io/static/img/bf-strstr-01.jpg
+[example-01]:http://imagle.github.io/static/img/bf-strstr-01.png
 [link-01]:http://stackoverflow.com/questions/23146845/indexof-method-of-string-class-in-jdk-is-implemented-by-using-bf-why-not-use-km?noredirect=1#comment35393536_23146845
 [photo]:http://imagle.github.io/static/img/photo.jpg

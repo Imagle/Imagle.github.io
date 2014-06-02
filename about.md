@@ -31,12 +31,12 @@ group: "navigation"
 
 __我的邮箱__：wangrq2008(at)gmail.com  
 __新浪微博__: [王Jerry王][weibo]   
-__github__：[Imagle][github]，我的一些代码可以在这里找到   
+__github__：[Imagle][]，我的一些代码可以在这里找到   
 __微信公众号__: 分享技术之美(ID:swalge)  
     ![weixin][photo]
 
 [weibo]: http://weibo.com/rqqrwang
-[github]: http://github.com/Imagle
+[Imagle]: http://github.com/Imagle
 [Jekyll Bootstrap]: http://jekyllbootstrap.com "The Definitive Jekyll Blogging Framework"
 [Twitter Bootstrap]: http://twitter.github.com/bootstrap/
 [jQuery]: http://jquery.com
