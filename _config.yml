@@ -15,7 +15,7 @@ description_length: 200
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : In Code
+title :Cool Code 
 address: Home  
 tagline: Reading, Learning, Rethinking
 author :
@@ -23,7 +23,7 @@ author :
   email : wangrq2008@gmail.com
   github : Imagle
   twitter : swagle
-start_year: "2012"
+start_year: "2014"
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt
@@ -89,13 +89,13 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : Jerryblog
+      short_name : WangJerry
     livefyre :
-      site_id : 123
+      site_id : 12j
     intensedebate :
-      account : 123abc
+      account : 12abc
     facebook :
-      appid : 123
+      appid : 12i
       num_posts: 5
       width: 580
       colorscheme: light
@@ -105,13 +105,14 @@ JB :
   # Set 'provider' to false to turn analytics off globally.
   #
   analytics :
-    provider : google
-    google :
-        tracking_id : 'UA-34056607-1'
-    getclicky :
-      site_id :
-    mixpanel :
-        token : '_MIXPANEL_TOKEN_'
+#    provider : google
+     provider :false 
+#    google :
+#        tracking_id : 'UA-34056607-1'
+#    getclicky :
+#      site_id :
+#    mixpanel :
+#        token : '_MIXPANEL_TOKEN_'
 
   # Settings for sharing helper.
   # Sharing is for things like tweet, plusone, like, reddit buttons etc.
