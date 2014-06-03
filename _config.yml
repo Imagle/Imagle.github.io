@@ -91,11 +91,11 @@ JB :
     disqus :
       short_name : wangjerry
     livefyre :
-      site_id : 12j
+      site_id : 123
     intensedebate :
-      account : 12abc
+      account : 123abc
     facebook :
-      appid : 12i
+      appid : 123
       num_posts: 5
       width: 580
       colorscheme: light
@@ -105,14 +105,13 @@ JB :
   # Set 'provider' to false to turn analytics off globally.
   #
   analytics :
-#    provider : google
-     provider :false 
-#    google :
-#        tracking_id : 'UA-34056607-1'
-#    getclicky :
-#      site_id :
-#    mixpanel :
-#        token : '_MIXPANEL_TOKEN_'
+    provider : google
+    google :
+        tracking_id : 'UA-51600098-1'
+    getclicky :
+      site_id :
+    mixpanel :
+        token : '94c58a9d804cefe3ea74cecdebf8b3d0'
 
   # Settings for sharing helper.
   # Sharing is for things like tweet, plusone, like, reddit buttons etc.
