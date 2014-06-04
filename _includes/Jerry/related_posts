@@ -7,5 +7,4 @@
     var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
 </script>
 <script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
-
 {% assign tags_list = nil %}
