@@ -37,38 +37,40 @@ tags: [replication, mysql]
 #### 二、在主库中创建需要同步的账号并对其赋权限 
 1. 在 __web01__ 机器上执行如下命令： 
 
-    mysql> GRANT REPLICATION SLAVE ON *.* TO 'replication'@'%' identified by 'password';
-    mysql> flush privleges
-    $mysqldump -uroot 数据库  >mdb.sql 
-    mysql> show master status\G; 
-    记下binlog文件和position 
+    mysql> GRANT REPLICATION SLAVE ON *.* TO 'replication'@'%' identified by 'password';  
+    mysql> flush privleges  
+    $mysqldump -uroot 数据库  >mdb.sql  
+    mysql> show master status\G;   
+    记下binlog文件和position  
 
-如果主库数据更新频繁的话，需要执行  
-    mysql> FLUSH TABLES WITH READ LOCK;  
+如果主库数据更新频繁的话，需要执行`mysql> FLUSH TABLES WITH READ LOCK;`    
 
-2. 到 __web02__ 机器上将上面的sql导入到从库中 
-
-    $ mysql -uroot syncDB < mdb.sql 
-
+2. 到 __web02__ 机器上将上面的sql导入到从库中  
+  
+    $ mysql -uroot syncDB < mdb.sql  
+  
 在 __web02__ 上执行如下命令：  
-    mysql> change master to master_host = "web01's ip address", master_user = 'replication', master_password = 'renrenshuo', master_log_file = 'binlog.0000xx', master_log_pos = position; 
+    mysql> change master to master_host = "web01's ip address", master_user = 'replication', master_password = 'renrenshuo', master_log_file = 'binlog.0000xx', master_log_pos = position;  
     mysql> start slave;  
 
 在 __web01__ 上(可选和上述lock步骤对应) 
     mysql> unlock tables; 
 
 #### 三、验证 
-在 __web01__ 上 
+在 __web01__ 上  
  - 验证replication@‘%’的权限`mysql>select User, Host from mysql.user;`， 如图  
   ![picture-example_01][example_01]  
  - 验证master的状态`mysql> show master status\G;`,如图  
   ![picture-example_01][example_02]  
 
 在 __web02__ 上  
+
  - 查看slave机器的进程`mysql>show processlist;`，如图  
   ![picture-example_01][example_04]  
+
  - 查看slave机器状态，`mysql> show slave status\G;`，如图  
   ![picture-example_01][example_04] 
+
   只有当上图中的`Slave_IO_Running:Yes`和'Slave_SQL_Running:Yes'均为__Yes__时，说明配置成功。 
 -------------------------------------------------------  
 我开通了微信公众号--__分享技术之美__，我会不定期的分享一些我学习的东西.  
