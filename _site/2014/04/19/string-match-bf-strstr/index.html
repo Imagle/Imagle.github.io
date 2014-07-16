@@ -1,0 +1,323 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-ch" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>字符串匹配之BF---暴力破解法 | Cool Code</title>
+  <meta name="description" content="strstr implement with brute force algorithm" />
+  <meta name="author" content="Jerry" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="ae45104a-608e-4c23-9013-418321f65c6e" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">Home</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://Imagle.github.io" />
+              <input type="hidden" name="sitesearch" value="http://Imagle.github.io" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>字符串匹配之BF---暴力破解法</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        
+<p>写完第一篇字符串匹配文章，发现竟然没有介绍啥是字符串匹配算法，啥是KMP，直接就开讲KMP的next数组有点唐突。而在我打算写第二篇的时候发现，我们为什么要有KMP算法，它到底比普通的算法好在哪里？回过头来想想应该把普通的暴力法也写写，这样才能明白它们的好。同时，不要以为它是暴力法就认为它不好，你没必要掌握它。同学，你知道吗？几乎所有标准库中类似字符串匹配的函数(如: java-indexof)都是采用的我们今天要将的BF(Brute Force)方法，原因见<a href="http://stackoverflow.com/questions/23146845/indexof-method-of-string-class-in-jdk-is-implemented-by-using-bf-why-not-use-km?noredirect=1#comment35393536_23146845">StackOverflow</a>。  </p>
+
+<p>好，下面首先正式把问题摆出来，给定两个串S=”s0, s1, s2, …., sn”, T=”t0, t1, t2,…, tn”, 在主串S中查找字串T的过程称为字符串匹配问题，T称为模式串。  </p>
+
+<h4 id="section">一、算法简介</h4>
+
+<p>BF(Brute Force)算法，应该很容易写出来，下面先给出伪码： </p>
+
+<ul>
+  <li>1. 首先设定 S 和 T 的起始比较下标 i 和 j；</li>
+  <li>2. 循环直到 i+m&gt;n 或者T中的字符都比较完(j==m)</li>
+  <li>
+    <ul>
+      <li>2.1 如果S[i]==T[j], 继续比较S和T的下一个字符，否则</li>
+    </ul>
+  </li>
+  <li>
+    <ul>
+      <li>2.2 将 i 和 j 回溯，准备下一轮比较</li>
+    </ul>
+  </li>
+  <li>3. 如果T中的字符都比较完(j==m)，则返回比较的起始下标</li>
+  <li>
+    <ul>
+      <li>否则返回-1，表示匹配失败  </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="section-1">二、算法实现</h4>
+
+<pre><code>int strStr(const char *S, const char *T){
+    if(S==NULL||T==NULL) return -1;
+    int n = strlen(S);
+    int m = strlen(T);
+    int i=0;
+    while( i+m&lt;=n){
+        int k=i, j=0;
+        for(; j&lt;m&amp;&amp;k&lt;n&amp;&amp;S[k]==T[j]; ++k,++j) ;
+        if(j==m) return i;  //  匹配成功，返回比较开始位置
+        ++i;
+    }
+    return -1;   // 匹配失败
+}  
+</code></pre>
+
+<h4 id="section-2">三、实例</h4>
+<p>假定给定主串 S=”ababcabcacbab”, 模式 T=”abcac”, BF匹配过程如下：<br />
+<img src="http://imagle.github.io/static/img/bf-strstr-01.png" alt="picture-example-01" />  </p>
+
+<h4 id="bf">四、BF算法的缺点</h4>
+<p>BF算法的优点就是简单可靠，这跟现实中的东西一样，越简单的东西越是信得过的(纯属娱乐:东哥也说了’她是我见过的最单纯的女孩’)，可见简单就是好，而复杂的东西限制要求多。<br />
+BF算法的确定就是一遇到比较失败的时候就需要回退到前面重新开始比较，之前比较匹配过的信息完全用不上，一句话就是不智能嘛。  </p>
+
+<h4 id="bfkmpbm">五、标准库为啥要采用BF而不采用KMP，BM喃？</h4>
+<p>打开上面StackOverflow的链接，就能见着答案，我这里把英文贴出来，为防止有些童鞋一见English就头大，大概翻译了下。  </p>
+
+<blockquote>
+  <p>The more advanced string search algorithms have a non-trivial setup time. If you are doing a once-off string search involving a not-too-large target string, you will find that you spend more time on the setup than you save during the string search.And even just testing the lengths of the target and search string is not going to give a good answer as to whether it is “worth it” to use an advanced algorithm. The actual speedup you get from (say) Boyer-Moore depends on the values of the strings; i.e. the character patterns.<br />
+The Java implementors have take the pragmatic approach. They cannot guarantee that an advanced algorithm will give better performance, either on average, or for specific inputs. Therefore they have left it to the programmer to deal with … where necessary. <br />
+ 大概意思就是，像KMP，BM这些高级算法的会有预处理时间和会消耗一些空间，在处理一些不是非常大的字符串的时候，时间不会有太大优势，而且还会占用一些空间。   </p>
+</blockquote>
+
+<hr />
+<p>我开通了微信公众号–<strong>分享技术之美</strong>，我会不定期的分享一些我学习的东西.<br />
+你可以搜索公众号：<strong>swalge</strong> 或者扫描下方二维码关注我<br />
+<img src="http://imagle.github.io/static/img/photo.jpg" alt="关注" />  </p>
+
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+   <span id="bshare-shareto">分享到</span>
+
+   <a title="新浪微博" class="bshare-sinaminiblog"></a>
+   <a title="腾讯微博" class="bshare-qqmb"></a>
+   <a title="人人网" class="bshare-renren"></a>
+
+   <a title="更多平台" id="bshare-more-icon" class="bshare-more"></a>
+   <span class="BSHARE_COUNT bshare-share-count">--</span>
+</div>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=5a2a17c9-1a8e-4f45-a3f7-3c7c5600efda&style=-1"></script>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC2.js"></script>
+        
+        <div class="post-end">
+    <strong>
+    <p>欢迎转载，转载请注明作者及出处<a href="Imagle.github.io" ref="nofollow">Imagle.github.io</a>，请勿用于商业用途</p>
+    <p>本文地址：<a href="http://imagle.github.io//2014/04/19/string-match-bf-strstr" ref="nofollow">http://imagle.github.io//2014/04/19/string-match-bf-strstr</a></p>
+    </strong>
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2014/04/18/string-match-kmp-strstr" title="字符串匹配之KMP---全力解析">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2014/04/21/How-to-solve-eclipse's-Black-background-of-Prompt-box-in-Ubuntu-12_04" title="ubuntu12.04中eclipse提示框背景为黑色的解决方法">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <button class="btn-primary btn-small" id="show_disqus">Show Comments</button>
+        <script type="text/javascript">
+          $(function() {
+            $('#show_disqus').click(function() {
+              var s = '<div id="disqus_thread"></div><script type="text/javascript">';
+              s += 'var disqus_developer = 1;';
+              s += "var disqus_shortname = 'wangjerry';";
+              s += " var disqus_identifier = '/2014/04/19/string-match-bf-strstr';";
+              s += "var disqus_url = 'http://imagle.github.io//2014/04/19/string-match-bf-strstr';"
+              s += "(function() {var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);})();";
+              s += '</' + 'script>';
+              $('#show_disqus').after('<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>').after('<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>').after(s).hide();
+            });
+          });
+        </script>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2014-04-19</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+          <h4>Tags</h4>
+          <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#strstr-ref">strstr <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#brute force-ref">brute force <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#algorithm-ref">algorithm <span>2</span></a></li>
+    
+  
+
+
+
+          </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <script type="text/javascript" id="wumiiRelatedItems"></script>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://imagle.github.io//2014/04/19/string-match-bf-strstr";
+    var wumiiTitle = "字符串匹配之BF---暴力破解法";
+    var wumiiTags = "strstr,brute force,algorithm";
+    var wumiiCategories = [];
+    var wumiiSitePrefix = "http://imagle.github.io/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2014 <span id="now_year"></span> Jerry. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2014) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

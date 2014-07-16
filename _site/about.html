@@ -1,0 +1,174 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-ch" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>About | Cool Code</title>
+  <meta name="description" content="" />
+  <meta name="author" content="Jerry" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="ae45104a-608e-4c23-9013-418321f65c6e" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">Home</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://Imagle.github.io" />
+              <input type="hidden" name="sitesearch" value="http://Imagle.github.io" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>About  <small></small></h1>
+</div>
+
+<div class="row page-body">
+  <div class="span12">
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+<h3 id="section">关于我</h3>
+
+<p>在读CS硕士一枚，爱好广泛，喜欢技术
+熟悉C语言，会用C++，能写Java</p>
+
+<hr />
+
+<h3 id="section-1">关于网站</h3>
+
+<p>在这个网站，我会记录一些自己在编程时的一些思想、感悟、体会，分享自己编程的点点滴滴，也算是自己编程之路的一个个脚印吧。同时，可能还会有一些自己翻译的文章。此外，也可能会有一些自己的生活杂记。</p>
+
+<h4 id="section-2">技术</h4>
+
+<ul>
+  <li>网站源码：https://github.com/Imagle/Imagle.github.io</li>
+  <li><a href="http://jekyllbootstrap.com" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a></li>
+  <li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a></li>
+  <li><a href="http://jquery.com">jQuery</a></li>
+</ul>
+
+<hr />
+
+<h3 id="section-3">联系我？</h3>
+
+<p><strong>我的邮箱</strong>：wangrq2008(at)gmail.com<br />
+<strong>新浪微博</strong>: <a href="http://weibo.com/rqqrwang">王Jerry王</a> <br />
+<strong>github</strong>：<a href="http://github.com/Imagle">Imagle</a>，我的一些代码可以在这里找到 <br />
+<strong>微信公众号</strong>: 分享技术之美(ID:swalge)<br />
+    <img src="http://Imagle.github.io/static/img/photo.jpg" alt="weixin" /></p>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2014 <span id="now_year"></span> Jerry. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2014) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+
