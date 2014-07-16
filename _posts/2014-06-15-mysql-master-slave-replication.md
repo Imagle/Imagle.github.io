@@ -23,7 +23,7 @@ tags: [replication, mysql]
     binlog-do-db=rrdb #需要同步的数据库  
     binlog-ignore-db=mysql, information_schema #不需要同步的数据库  
 
-2. __web02的my.conf__ 
+2. __web02的my.conf__   
     server-id=2  
     log-bin=/data/data/mysql/binlog/binlog  
     replicate-do-db= rrdb  
@@ -33,7 +33,7 @@ tags: [replication, mysql]
     mysqladmin -uroot shutdown  mysqld_safe &  
     
 #### 二、在主库中创建需要同步的账号并对其赋权限 
-1. 在 __web01__ 机器上执行如下命令： 
+1. 在 __web01__ 机器上执行如下命令：  
     mysql> GRANT REPLICATION SLAVE ON *.* TO 'replication'@'%' identified by 'password';  
     mysql> flush privleges  
     $mysqldump -uroot syncDB >mdb.sql  
@@ -45,7 +45,8 @@ tags: [replication, mysql]
     $ mysql -uroot syncDB < mdb.sql  
     在 __web02__ 上执行如下命令:  
     mysql> change master to master_host = "web01 ip address", master_user = 'replication', master_password = 'renrenshuo', master_log_file = 'binlog.0000xx', master_log_pos = position;  
-    mysql> start slave;在 __web01__ 上(可选和上述lock步骤对应) `mysql> unlock tables;`  
+    mysql> start slave;   
+    在 __web01__ 上(可选和上述lock步骤对应) `mysql> unlock tables;`  
     
 #### 三、验证 
 在 __web01__ 上  
