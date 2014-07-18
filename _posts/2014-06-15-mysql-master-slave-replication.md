@@ -55,15 +55,15 @@ tags: [replication, mysql]
   ![picture-example_01][example_01]   
 
  - 验证master的状态`mysql> show master status\G;`,如图  
-  ![picture-example_01][example_02]  
+  ![picture-example_02][example_02]  
 
 在 __web02__ 上  
 
  - 查看slave机器的进程`mysql>show processlist;`，如图  
-  ![picture-example_01][example_02]  
+  ![picture-example_03][example_03]  
 
  - 查看slave机器状态，`mysql> show slave status\G;`，如图  
-  ![picture-example_01][example_04] 
+  ![picture-example_04][example_04] 
   
   只有当上图中的`Slave_IO_Running:Yes`和 `Slave_SQL_Running:Yes` 均为 __Yes__ 时，说明配置成功。 
 
