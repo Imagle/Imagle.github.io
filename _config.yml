@@ -34,7 +34,7 @@ start_year: "2014"
 # Finally if you are pushing to a GitHub project page, include the project name at the end.
 #
 
-production_url : http://imagle.github.io/
+production_url : http://www.myhozz.com
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #

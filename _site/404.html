@@ -1,23 +1,24 @@
+
 <!DOCTYPE HTML>
 <html lang="zh-ch" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
 <head>
-  <title>{{ page.title }}{% if page.title != site.title %} | {{ site.title }}{% endif %}</title>
-  {% if page.description %}<meta name="description" content="{{ page.description }}" />{% endif %}
-  <meta name="author" content="{{ site.author.name }}" />
+  <title>404 Page not exist | Cool Code</title>
+  <meta name="description" content="" />
+  <meta name="author" content="Jerry" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
 
-  <meta name="wumiiVerification" content="0429eb3f-1e35-4848-945d-a099f82328d3" />
+  <meta name="wumiiVerification" content="ae45104a-608e-4c23-9013-418321f65c6e" />
   <!-- using baidu cdn instead
-  <link href="{{ ASSET_PATH }}/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
   -->
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
 
 
   <!-- Google Prettify -->
-  <link href="{{ ASSET_PATH }}/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="{{ ASSET_PATH }}/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
   <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
   -->
@@ -31,7 +32,7 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a class="brand" href="{{ HOME_PATH }}">{{ site.address }}</a>
+        <a class="brand" href="/">Home</a>
         <ul class="nav">
           <li><a href="/archive.html">Archive</a></li>
           <li><a href="/about.html">About</a></li>
@@ -45,8 +46,8 @@
               <input type="hidden" name="ie" value="UTF-8" />
               <input type="hidden" name="oe" value="UTF-8" />
               <input type="hidden" name="hl" value="zh-CN" />
-              <input type="hidden" name="domains" value="http://www.myhozz.com" />
-              <input type="hidden" name="sitesearch" value="http://www.myhozz.com" />
+              <input type="hidden" name="domains" value="http://Imagle.github.io" />
+              <input type="hidden" name="sitesearch" value="http://Imagle.github.io" />
             </form>
           </li>
         </ul>
@@ -59,14 +60,41 @@
 
   <div class="container page-container">
     <div class="content">
-      {{ content }}
+      
+<div class="page-header">
+  <h1>404 Page not exist  <small></small></h1>
+</div>
+
+<div class="row page-body">
+  <div class="span12">
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+
+<iframe scrolling='no' frameborder='0' src='http://yibo.iyiyun.com/js/yibo404' width='735' height='700' style="display:block;"></iframe>
+
+<!-- <h3>嘿，兄弟！走错路了吧！！！这里是404房间！！！
+<small>Hello, Buddy! You've got a wrong way!!! Here is Room 404!!!</small></h3>
+
+<p>别担心，你点一下下边的黑色的方块去主页找，或者点那个蓝的，到存档里找也想啊。。再或者，导航条右边有个搜索，你到那里去搜搜看呗</p>
+
+<p>Don't worry. You could try to click the black squre to go home page, or click that blue search in archives...Or else, there's a search bar at the right of the navigation bar, go and search.</p>
+
+<a href="/" class="btn btn-inverse">Home 主页</a>
+<a href="/archive.html" class="btn btn-primary">Archives 存档</a> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
     </div>
 
     <footer>
-        <p>&copy; {{ site.start_year }} <span id="now_year"></span> {{ site.author.name }}. </p>
+        <p>&copy; 2014 <span id="now_year"></span> Jerry. </p>
         <script type="text/javascript">
           var now_year = new Date().getFullYear();
-          if (now_year != {{ site.start_year }}) {
+          if (now_year != 2014) {
               $('#now_year').html('- ' + now_year);
           }
         </script>
@@ -74,7 +102,7 @@
   </div>
 
   <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
-  <script type="text/javascript" src="{{ ASSET_PATH }}/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
   <script type="text/javascript">
     $(function() {
 
@@ -113,14 +141,15 @@
       }
 
       $('.post_at_index').each(function() {
-        var count = traverse($(this), 0, {{ site.description_length }});
-        if (count > {{ site.description_length }}) {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
           var thisUrl = $(this).siblings().first().children().attr('href');
           $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
         }
       });
     });
   </script>
-  {% include JB/analytics %}
+  
 </body>
 </html>
+

@@ -1,0 +1,1061 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-ch" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>Jerry's Home | Cool Code</title>
+  
+  <meta name="author" content="Jerry" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="ae45104a-608e-4c23-9013-418321f65c6e" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">Home</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://Imagle.github.io" />
+              <input type="hidden" name="sitesearch" value="http://Imagle.github.io" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Jerry's Home  <small>Reading, Learning, Rethinking</small></h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span12">
+    
+
+<div class="row-fluid page-body">
+
+  <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/06/15/mysql-master-slave-replication">Mysql主从同步</a></h2>
+        <p>
+          Posted by <strong>Jerry</strong> at <strong>2014-06-15</strong> with tags <a href="/tags.html#replication-ref" rel="nofollow">replication</a>, <a href="/tags.html#mysql-ref" rel="nofollow">mysql</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        
+<p>在公司中一般对数据库都会有2份实时备份，实现就是用的mysql的复制（replication）。用于线上的数据库称为主库，也即是所说的master，其余的2份实时备份就是slave，如何配置请看下面介绍。 </p>
+
+<h5 id="section">基本情况</h5>
+
+<ul>
+  <li>机器两台：web01,web02都安装的有mysql，</li>
+  <li>目标：将web01设置为master，web02设置为slave，需要同步web01上面的名为syncDB的数据库。 </li>
+</ul>
+
+<h5 id="section-1">开始设置</h5>
+
+<h4 id="myconf">一、首先设置my.conf</h4>
+<ol>
+  <li>
+    <p><strong>web01的my.conf</strong> <br />
+ server-id=1     #0表示拒绝一切从库，1表示主，大于1都都为从，每个机器此id必须唯一<br />
+ log-bin=/data/data/mysql/binlog/binlog     #binlog的存放路径<br />
+ binlog-do-db=rrdb #需要同步的数据库<br />
+ binlog-ignore-db=mysql, information_schema #不需要同步的数据库  </p>
+  </li>
+  <li>
+    <p><strong>web02的my.conf</strong> 
+ server-id=2<br />
+ log-bin=/data/data/mysql/binlog/binlog<br />
+ replicate-do-db= rrdb<br />
+ replicate-ignore-db=mysql,information_schema  </p>
+  </li>
+  <li>
+    <p><strong>重启web01和web02机器的mysql</strong> <br />
+ mysqladmin -uroot shutdown  mysqld_safe &amp;  </p>
+  </li>
+</ol>
+
+<h4 id="section-2">二、在主库中创建需要同步的账号并对其赋权限</h4>
+<ol>
+  <li>
+    <p>在 <strong>web01</strong> 机器上执行如下命令： 
+ mysql&gt; GRANT REPLICATION SLAVE ON <em>.</em> TO ‘replication’@’%’ identified by ‘password’;<br />
+ mysql&gt; flush privleges<br />
+ $mysqldump -uroot syncDB &gt;mdb.sql<br />
+ mysql&gt; show master status\G; <br />
+ 记下binlog文件和position<br />
+ 如果主库数据更新频繁的话，需要执行<code>mysql&gt; FLUSH TABLES WITH READ LOCK;</code>  </p>
+  </li>
+  <li>
+    <p>到 <strong>web02</strong> 机器上将上面的sql导入到从库中<br />
+ $ mysql -uroot syncDB &lt; mdb.sql<br />
+ 在 <strong>web02</strong> 上执行如下命令:<br />
+ mysql&gt; change master to master_host = “web01 ip address”, master_user = ‘replication’, master_password = ‘renrenshuo’, master_log_file = ‘binlog.0000xx’, master_log_pos = position;<br />
+ mysql&gt; start slave;在 <strong>web01</strong> 上(可选和上述lock步骤对应) <code>mysql&gt; unlock tables;</code>  </p>
+  </li>
+</ol>
+
+<h4 id="section-3">三、验证</h4>
+<p>在 <strong>web01</strong> 上  </p>
+
+<ul>
+  <li>
+    <p>验证replication@‘%’的权限<code>mysql&gt;select User, Host from mysql.user;</code>， 如图<br />
+  <img src="http://imagle.github.io/static/img/replication.png" alt="picture-example_01" />   </p>
+  </li>
+  <li>
+    <p>验证master的状态<code>mysql&gt; show master status\G;</code>,如图<br />
+  <img src="http://imagle.github.io/static/img/master-status.png" alt="picture-example_01" />  </p>
+  </li>
+</ul>
+
+<p>在 <strong>web02</strong> 上  </p>
+
+<ul>
+  <li>
+    <p>查看slave机器的进程<code>mysql&gt;show processlist;</code>，如图<br />
+  <img src="http://imagle.github.io/static/img/master-status.png" alt="picture-example_01" />  </p>
+  </li>
+  <li>
+    <p>查看slave机器状态，<code>mysql&gt; show slave status\G;</code>，如图<br />
+  <img src="http://imagle.github.io/static/img/slave-status.png" alt="picture-example_01" /> </p>
+  </li>
+</ul>
+
+<p>只有当上图中的<code>Slave_IO_Running:Yes</code>和 <code>Slave_SQL_Running:Yes</code> 均为 <strong>Yes</strong> 时，说明配置成功。 </p>
+
+<hr />
+<p>我开通了微信公众号–<strong>分享技术之美</strong>，我会不定期的分享一些我学习的东西.<br />
+你可以搜索公众号：<strong>swalge</strong> 或者扫描下方二维码关注我<br />
+<img src="http://imagle.github.io/static/img/photo.jpg" alt="关注" />  </p>
+
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/04/23/Longest-palindrome-substring">最长回文子串的O(n)算法</a></h2>
+        <p>
+          Posted by <strong>Jerry</strong> at <strong>2014-04-23</strong> with tags <a href="/tags.html#算法-ref" rel="nofollow">算法</a>, <a href="/tags.html#C++-ref" rel="nofollow">C++</a>, <a href="/tags.html#最长回文子串-ref" rel="nofollow">最长回文子串</a>, <a href="/tags.html#Palindromic-ref" rel="nofollow">Palindromic</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        
+<p>首先讲讲什么是回文, 看看Wiki是怎么说的：回文，亦称回环，是正读反读都能读通的句子，亦有将文字排列成圆圈者，是一种修辞方式和文字游戏。回环运用得当，可以表现两种事物或现象相互依靠或排斥的关系， 比如madam，abba，这样正反都一样的串就是回文串。</p>
+
+<p>今天要写的问题了就是在一个字符串中找出最长的回文字串，比如串：”abcdedabakml”，它的最长回文字串就是”abcdedaba”。一般的方法有暴力法，动态规划法，今天来写一个时间复杂度为O(n)的算法。  </p>
+
+<p>回文匹配，一般情况会分奇数和偶数来分开进行设计算法来统计，今天介绍的算法重新构造了一个字符串，这个新字符串消除了之前的奇偶差别，使得只用设计一种算法就可以。 </p>
+
+<h5 id="t">1. 首先，构造新的字符串T</h5>
+<p>构造方法：在原字符串S的首尾和每个字符之间加入一个特殊字符’#’, 例如S: abba， 则构造后为T: #a#b#b#a#(注：在程序中为防止越界会在首尾再加两个字符，即^#a#b#b#a#$);  </p>
+
+<h5 id="section">2. 关键算法：</h5>
+
+<p>a[ ]: a[i]代表以位置 i 为中心向左向右可扩展的长度<br />
+mid: 当前取得最大回文的中心位置(下面例子用 m 表示)<br />
+R： 以 mid 为中心，向右扩展 a[mid] 位的最右位置<br />
+j:  与 i 关于 mid 对称的位置  </p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>i</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>^</td>
+      <td>#</td>
+      <td>a</td>
+      <td>#</td>
+      <td>b</td>
+      <td>#</td>
+      <td>b</td>
+      <td>#</td>
+      <td>a</td>
+      <td>#</td>
+      <td>$</td>
+    </tr>
+    <tr>
+      <td>a</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td>m</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td>R</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>此算法的关键之处在于: 当 i&lt;R时，a[i] 有如下简便计算公式<code>a[i] = min(R-i, a[j])</code>:  </p>
+
+<ul>
+  <li>
+    <p>A. 当<code>R - i &gt; a[j]</code>的时候，以T[j]为中心的回文子串包含在以T[mid]为中心的回文子串中，由于 i 和 j 对称，以T[i]为中心的回文子串必然包含在以T[mid]为中心的回文子串中，所以必有 <code>a[i] = a[j]</code>, 如下图：此时<code>a[i] = a[j] = 1;</code><br />
+<img src="http://imagle.github.io/static/img/palindromicsubstring-01.png" alt="picture:palindrome" />  </p>
+  </li>
+  <li>
+    <p>B. 当 <code>R - i &lt; a[j]</code> 的时候，以T[j]为中心的回文子串不一定完全包含于以T[mid]为中心的回文子串中，但是基于对称性可知，下图中两个绿框所包围的部分是相同的，也就是说以S[i]为中心的回文子串，其向右至少会扩张到 R 的位置，也就是说 <code>a[i] &gt;= R-i</code>。至于R之后的部分是否对称，就只能老老实实去匹配了。<br />
+<img src="http://imagle.github.io/static/img/palindromicsubstring-02.png" alt="picture:palindrome" />  </p>
+  </li>
+</ul>
+
+<h5 id="section-1">3. 得到所求字符串</h5>
+
+<p>找出 <code>a[ ]</code> 数组中最大的值及其下标，记为<code>max</code>和<code>index</code>。<br />
+所求字符串为<code>string(s, (index-1-max)/2, max)</code>  </p>
+
+<h5 id="section-2">4, 算法实现</h5>
+
+<pre><code>// Transform S into T.
+// For example, S = "abba", T = "^#a#b#b#a#$".
+// ^ and $ signs are sentinels appended to each end to avoid bounds checking
+string preProcess(string s) {
+    int n = s.length();
+    if (n == 0) return "^$";
+    string ret = "^";
+    for (int i = 0; i &lt; n; i++)
+        ret += "#" + s.substr(i, 1);
+    ret += "#$";
+    return ret;
+}
+
+string longestPalindrome(string s) {
+    string T = preProcess(s);
+    int n = T.length();
+    int *a = new int[n];
+    int mid = 0, R = 0;
+    for (int i = 1; i &lt; n-1; i++) {
+        int j = 2*mid-i; // 找到i关于mid对称的位置    
+        a[i] = (R &gt; i) ? min(R-i, a[j]) : 0;
+        // Attempt to expand palindrome centered at i
+        while (T[i + 1 + a[i]] == T[i - 1 - a[i]])
+            a[i]++;
+        // If palindrome centered at i expand past R,
+        // adjust center based on expanded palindrome.
+        if (i + a[i] &gt; R) {
+            mid = i;
+            R = i + a[i];
+        }
+    }
+    // Find the maximum element in a.
+    int maxLen = 0;
+    int centerIndex = 0;
+    for (int i = 1; i &lt; n-1; i++) {
+        if (a[i] &gt; maxLen) {
+            maxLen = a[i];
+            centerIndex = i;
+        }
+    }
+    delete[] a;  
+    return s.substr((centerIndex - 1 - maxLen)/2, maxLen);
+}
+</code></pre>
+
+<p><strong>参考文章</strong>:<br />
+    http://leetcode.com/2011/11/longest-palindromic-substring-part-ii.html</p>
+
+<hr />
+<p>我开通了微信公众号–<strong>分享技术之美</strong>，我会不定期的分享一些我学习的东西.<br />
+你可以搜索公众号：<strong>swalge</strong> 或者扫描下方二维码关注我<br />
+<img src="http://imagle.github.io/static/img/photo.jpg" alt="关注" />  </p>
+
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/04/22/Something-about-Heap-in-STL-of-C++">论C++的STL源码中关于堆算法的那些事</a></h2>
+        <p>
+          Posted by <strong>Jerry</strong> at <strong>2014-04-22</strong> with tags <a href="/tags.html#堆-ref" rel="nofollow">堆</a>, <a href="/tags.html#C++-ref" rel="nofollow">C++</a>, <a href="/tags.html#STL源码-ref" rel="nofollow">STL源码</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        
+<p>关于堆，我们肯定熟知的就是它排序的时间复杂度在几个排序算法里面算是比较靠上的O(nlogn)经常会拿来和快速排序和归并排序讨论，而且它还有个优点是它的空间复杂度为O(1), 但是STL中没有给我们提供像vector, deque, stack, queue之类的数据结构供我们使用，但在C++STL中却提供了一些列的算法，让我们依旧可以使用堆，比如make_heap(), push_heap(), pop_heap(), sort_heap()。今天就来论论这几个算法，在介绍上述算法之前先引入两个关于堆的算法，上述四个算法本质上都使用引入的两个算法。 </p>
+
+<h4 id="section">一、关于堆的两个算法</h4>
+
+<p>1.<strong>堆的插入算法</strong><br />
+下面先看个例子，一个数组a[]={1,9,5,13},建一个最大堆，下图为过程<br />
+<img src="http://imagle.github.io/static/img/heap1.png" alt="picture:build max heap" /><br />
+从图中可以看出每插入一个元素，调整后都是一个最大堆，而且是插入到最后一个上(假设数组是可以动态增长的)，这样是从下往上进行调整(percolate up)，这样的调整算法叫插入法, 下面来看看插入法的代码实现：  </p>
+
+<pre><code>void insert_heap(int a[], int i){  
+    while(i&gt;0){  
+        int j=(i-1)/2;  
+        if(a[i] &lt; a[j]){  
+            swap(a[i], a[j]);  
+            i=j;  
+        }  
+        else break;  
+    }  
+}
+</code></pre>
+
+<p>2. <strong>堆的筛选法</strong><br />
+还是先看个例子<br />
+例：a[]={1, 9, 5, 13}, 排序过程如下图:<br />
+<img src="http://imagle.github.io/static/img/heap2.png" alt="picture:siftheap" /><br />
+像这样一次自上而下的调整过程，叫做筛选法， 算法实现:  </p>
+
+<pre><code>void sift_heap(int a[], int i){
+    // j 是 i 的左孩子
+    int j=2*i+1;
+    int n = strlen(a);
+    while(j&lt;n){
+        if(j&lt;n-1 &amp;&amp; a[j]&lt;a[j+1]) ++j;
+        if(a[i]&lt;a[j]){
+            swap(a[i],a[j]);
+            i=j;
+            j=2*i+1;
+        }
+        else
+            break;
+    }
+}
+void build_heap(int a[], int n){
+    int i=n/2;
+    //循环完后，就建立了一个最大堆
+    for(; i&gt;=0; ++i){
+        sift_heap(a, i);
+    }
+}
+</code></pre>
+
+<h4 id="stlxxxxheap">二、STL算法中的xxxx_heap算法</h4>
+
+<p>stl中的关于堆的算法都是在vector上实现的，并且实现的最大堆，且最大的元素位于数组的第一个位置。<br />
+1.<strong>push_heap</strong><br />
+首先来看看STL中的该算法的实现，该算法实现在stl_heap.h文件中，再此函数被调用的时候，新元素已经插入到底部容器的最尾端。  </p>
+
+<pre><code>template &lt;class RandomAccessIterator, class Compare&gt;
+inline void push_heap(RandomAccessIterator first, RandomAccessIterator last){
+    __push_heap_aux(first, last, distance_type(first), value_type(first));
+}
+template &lt;class RandomAccessIterator, class Distance, class T&gt;
+inline void __push_heap_aux(RandomAccessIterator first, RandomAccessIterator last, Distance*, T*) {
+    __push_heap(first, Distance((last - first) - 1), Distance(0), T(*(last - 1)));
+}
+template &lt;class RandomAccessIterator, class Distance, class T&gt;
+void __push_heap(RandomAccessIterator first, Distance holeIndex, Distance topIndex, T value) {
+    Distance parent = (holeIndex - 1) / 2;
+    while (holeIndex &gt; topIndex &amp;&amp; *(first + parent) &lt; value) {
+        *(first + holeIndex) = *(first + parent);
+        holeIndex = parent;
+        parent = (holeIndex - 1) / 2;
+    }   
+    *(first + holeIndex) = value;
+}  
+</code></pre>
+
+<p>可以看到push_heap算法最终调用的是__push_heap，算法内部都用的是迭代器，first是指向堆顶的迭代器，holeIndex指的新插入元素位置距离堆顶的距离，first+topIndex是该堆顶的位置，topIndex是距离， value是新插入的元素的值。<br />
+可以看出__push_heap就是我们介绍的第一种堆算法—-插入法。  </p>
+
+<p>2.<strong>__adjust_heap</strong><br />
+在详细介绍pop_heap, sort_heap, make_heap三个算法前先来介绍另一个算法__adjust_heap，__adjust_heap函数定义如下:  </p>
+
+<pre><code>template &lt;class RandomAccessIterator, class Distance, class T&gt;
+void __adjust_heap(RandomAccessIterator first, Distance holeIndex, Distance len, T value) {
+    Distance topIndex = holeIndex;
+    Distance secondChild = 2 * holeIndex + 2; //得到右孩子节点
+    while (secondChild &lt; len) {
+        if (*(first + secondChild) &lt; *(first + (secondChild - 1)))  //选择左右孩子中的较大节点
+            secondChild--;
+        *(first + holeIndex) = *(first + secondChild);
+        holeIndex = secondChild;
+        secondChild = 2 * (secondChild + 1);
+    }
+    if (secondChild == len) {
+        *(first + holeIndex) = *(first + (secondChild - 1));
+        holeIndex = secondChild - 1;
+    }
+    //此时没有满足整个堆的性质，需要再从下往上调整一次
+    __push_heap(first, holeIndex, topIndex, value);
+}  
+</code></pre>
+
+<p>通过将该算法和介绍的第二个算法相比，可知这个算法就是筛选法。  </p>
+
+<p>3.<strong>pop_heap</strong><br />
+pop_heap算法并不是将堆顶元素删除，而只是将其移到堆的最后，然后调整堆的时候按照len=len-1, 来进行调整，调整后之前最大的元素放在了容器的最后，可以用back()得到。<br />
+函数定义如下  </p>
+
+<pre><code>template &lt;class RandomAccessIterator&gt;
+inline void pop_heap(RandomAccessIterator first, RandomAccessIterator last) {
+    __pop_heap_aux(first, last, value_type(first));
+}
+template &lt;class RandomAccessIterator, class T&gt;
+inline void __pop_heap_aux(RandomAccessIterator first, RandomAccessIterator last, T*) {
+    __pop_heap(first, last - 1, last - 1, T(*(last - 1)), distance_type(first));
+}
+template &lt;class RandomAccessIterator, class T, class Distance&gt;
+inline void __pop_heap(RandomAccessIterator first, RandomAccessIterator last, RandomAccessIterator result, T value, Distance*) {
+    *result = *first;
+    __adjust_heap(first, Distance(0), Distance(last - first), value);
+}  
+</code></pre>
+
+<p>可以看出pop_heap最后调用的是__adjust_heap。  </p>
+
+<p>4.<strong>sort_heap</strong><br />
+sort_heap就是对堆进行排序。 从pop_heap得之，它每次可获得heap中键值最大的元素，如果持续对整个heap做pop_heap操作，每次将操作范围从后向前缩减一个元素，当整个程序执行完毕时，数组就是按照从大到小的顺序递增，下面是实际代码:  </p>
+
+<pre><code>template &lt;class RandomAccessIterator&gt;
+void sort_heap(RandomAccessIterator first, RandomAccessIterator last) {
+    while (last - first &gt; 1) pop_heap(first, last--);
+}  
+</code></pre>
+
+<p>5.<strong>make_heap</strong><br />
+make_heap用来将一段现有的数据转化为一个heap，下面是具体实现：  </p>
+
+<pre><code>template &lt;class RandomAccessIterator, class Compare&gt;
+inline void make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
+    __make_heap(first, last, comp, value_type(first), distance_type(first));
+}
+template &lt;class RandomAccessIterator, class Compare, class T, class Distance&gt;
+void __make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp, T*, Distance*) {
+    if (last - first &lt; 2) return; // 长度为0或1，就返回；
+    Distance len = last - first;
+    //找到第一个调整的节点
+    Distance parent = (len - 2)/2;    
+    while (true) {
+        __adjust_heap(first, parent, len, T(*(first + parent)), comp);
+        if (parent == 0) return;
+        parent--;
+    }
+}  
+</code></pre>
+
+<p>可以看见，该算法是从len/2开始调整，一直到parent为0，这就是我在上面第一部分的筛选法时候举的例子。<br />
+注： 以上所列出的STL算法均为SGI STL并且，列出的均为不能只能排序规则的一组。  </p>
+
+<h4 id="stl">三、STL中堆的应用</h4>
+<p>虽然stl中没有提供堆这个数据结构，但是priority queue的内部确是由堆来实现的。priority queue允许用户以任何次序将任何元素推入容器内，但取出的时候一定是从优先权最高的元素开始取。binary heap正好具有这样的特性。为了平衡各个操作的时间复杂度和实现的复杂度，binary heap适合作为priority queue的底层机制。下面贴一个priority_queue的完整实现代码，请注意在几个构造函数中都使用了make_heap算法，在push函数中使用了push_heap算法，在pop中使用了pop_heap算法：  </p>
+
+<pre><code>#ifndef __STL_LIMITED_DEFAULT_TEMPLATES
+template &lt;class T, class Sequence = vector&lt;T&gt;, 
+          class Compare = less&lt;typename Sequence::value_type&gt; &gt;
+#else
+template &lt;class T, class Sequence, class Compare&gt;
+#endif
+class  priority_queue {
+public:
+  typedef typename Sequence::value_type value_type;
+  typedef typename Sequence::size_type size_type;
+  typedef typename Sequence::reference reference;
+  typedef typename Sequence::const_reference const_reference;
+protected:
+  Sequence c;
+  Compare comp;
+public:
+  priority_queue() : c() {}
+  explicit priority_queue(const Compare&amp; x) :  c(), comp(x) {}
+
+#ifdef __STL_MEMBER_TEMPLATES
+  template &lt;class InputIterator&gt;
+  priority_queue(InputIterator first, InputIterator last, const Compare&amp; x)
+    : c(first, last), comp(x) { make_heap(c.begin(), c.end(), comp); }
+  template &lt;class InputIterator&gt;
+  priority_queue(InputIterator first, InputIterator last) 
+    : c(first, last) { make_heap(c.begin(), c.end(), comp); }
+#else /* __STL_MEMBER_TEMPLATES */
+  priority_queue(const value_type* first, const value_type* last, 
+                 const Compare&amp; x) : c(first, last), comp(x) {
+    make_heap(c.begin(), c.end(), comp);
+  }
+  priority_queue(const value_type* first, const value_type* last) 
+    : c(first, last) { make_heap(c.begin(), c.end(), comp); }
+#endif /* __STL_MEMBER_TEMPLATES */
+
+  bool empty() const { return c.empty(); }
+  size_type size() const { return c.size(); }
+  const_reference top() const { return c.front(); }
+  void push(const value_type&amp; x) {
+    __STL_TRY {
+      c.push_back(x); 
+      push_heap(c.begin(), c.end(), comp);
+    }
+    __STL_UNWIND(c.clear());
+  }
+  void pop() {
+    __STL_TRY {
+      pop_heap(c.begin(), c.end(), comp);
+      c.pop_back();
+    }
+    __STL_UNWIND(c.clear());
+  }
+};
+
+// no equality is provided
+
+__STL_END_NAMESPACE
+
+#endif /* __SGI_STL_INTERNAL_QUEUE_H */
+</code></pre>
+
+<hr />
+<p>我开通了微信公众号–<strong>分享技术之美</strong>，我会不定期的分享一些我学习的东西.<br />
+你可以搜索公众号：<strong>swalge</strong> 或者扫描下方二维码关注我<br />
+<img src="http://imagle.github.io/static/img/photo.jpg" alt="关注" />  </p>
+
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/04/21/How-to-solve-eclipse's-Black-background-of-Prompt-box-in-Ubuntu-12_04">ubuntu12.04中eclipse提示框背景为黑色的解决方法</a></h2>
+        <p>
+          Posted by <strong>Jerry</strong> at <strong>2014-04-21</strong> with tags <a href="/tags.html#eclipse-ref" rel="nofollow">eclipse</a>, <a href="/tags.html#Ubuntu12.04-ref" rel="nofollow">Ubuntu12.04</a>, <a href="/tags.html#background-ref" rel="nofollow">background</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        
+<p>前段时间和一个朋友聊天，由于他要在Ubuntu下面用eclipse进行编码，但是遇到一个问题—eclipse的提示框的背景是黑色的导致可视性非常的差, 我就给他说我当时也遇到过这个问题，我也费了很大的劲最后找到解决方法怎么解决的。相信会有很多朋友会遇到这样的问题，这就样本文就诞生了。</p>
+
+<p><strong>问题描述:</strong><br />
+当我们在ubuntu下面使用eclipse编程的时候，需要查看相应的代码的结构等信息，但是当我们把鼠标放到我们想看的代码上面的时候，出现了一个大黑框，然后鼠标点击相应的块才能看见相应的文字，其他的全是黑色无法看见，导致心里很不爽，如下图：
+<img src="http://imagle.github.io/static/img/eclipse-linux-01.png" alt="picture:eclipse-linux-01" />  </p>
+
+<p><strong>问题分析:</strong><br />
+出现这个问题的原因主要是由于Ubuntu（12.04）中默认的主题为Ambiance，这个主题的tooltip默认设置前景(foreground)色为黑色(#ffffff)，背景(background)色为白色(#000000)，所以才出现这个问题。当然一般我们解决这个问题的方法是更换主题就好了，但是这样做不能根本的解决问题，下面我们介绍一种能够不更换主题，手工修改的解决方法。 </p>
+
+<p><strong>解决方法：</strong>  </p>
+
+<ul>
+  <li>
+    <dl>
+      <dt>1. 进入系统用户主题目录</dt>
+      <dd><code>$ cd /usr/share/themes/</code></dd>
+    </dl>
+  </li>
+  <li>
+    <dl>
+      <dt>2. 选择使用的主题，进入该主题目录，以Ambiance为例</dt>
+      <dd><code>$ cd Ambiance</code></dd>
+    </dl>
+  </li>
+  <li>
+    <dl>
+      <dt>3. 修改主题配置gtk-2.0/gtkrc</dt>
+      <dd><code>$ sudo vi gtk-2.0/gtkrc</code>
+  <img src="http://imagle.github.io/static/img/eclipse-linux-02.png" alt="picture:eclipse-linux-02" /></dd>
+    </dl>
+  </li>
+  <li>
+    <p>4. 修改tooltip的前景色(tooptip_fg_color)和背景色(tooptip_bg_color)<br />
+  <code>tooltip_fg_color:#000000</code><br />
+  <code>tooltip_bg_color:#c5e0b3</code> (该颜色模式RGB为：R:197, G:224, B:179; 若想改为windows下面的淡黄色则为#f2edbc)</p>
+
+    <p>注：若上述gitrc文件中没有tooltip的配置，则可以自己添加上述配置。
+  <img src="http://imagle.github.io/static/img/eclipse-linux-03.png" alt="picture:eclipse-linux-03" /></p>
+  </li>
+  <li>5. 保存退出，并且在系统设置—&gt;外观—&gt;主题的中切换下主题，然后在切换回来，就Okay了，如下图：
+  <img src="http://imagle.github.io/static/img/eclipse-linux-04.png" alt="picture:eclipse-linux-04" />  </li>
+</ul>
+
+<hr />
+<p>我开通了微信公众号–<strong>分享技术之美</strong>，我会不定期的分享一些我学习的东西.<br />
+你可以搜索公众号：<strong>swalge</strong> 或者扫描下方二维码关注我<br />
+<img src="http://imagle.github.io/static/img/photo.jpg" alt="关注" />  </p>
+
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/04/19/string-match-bf-strstr">字符串匹配之BF---暴力破解法</a></h2>
+        <p>
+          Posted by <strong>Jerry</strong> at <strong>2014-04-19</strong> with tags <a href="/tags.html#strstr-ref" rel="nofollow">strstr</a>, <a href="/tags.html#brute force-ref" rel="nofollow">brute force</a>, <a href="/tags.html#algorithm-ref" rel="nofollow">algorithm</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        
+<p>写完第一篇字符串匹配文章，发现竟然没有介绍啥是字符串匹配算法，啥是KMP，直接就开讲KMP的next数组有点唐突。而在我打算写第二篇的时候发现，我们为什么要有KMP算法，它到底比普通的算法好在哪里？回过头来想想应该把普通的暴力法也写写，这样才能明白它们的好。同时，不要以为它是暴力法就认为它不好，你没必要掌握它。同学，你知道吗？几乎所有标准库中类似字符串匹配的函数(如: java-indexof)都是采用的我们今天要将的BF(Brute Force)方法，原因见<a href="http://stackoverflow.com/questions/23146845/indexof-method-of-string-class-in-jdk-is-implemented-by-using-bf-why-not-use-km?noredirect=1#comment35393536_23146845">StackOverflow</a>。  </p>
+
+<p>好，下面首先正式把问题摆出来，给定两个串S=”s0, s1, s2, …., sn”, T=”t0, t1, t2,…, tn”, 在主串S中查找字串T的过程称为字符串匹配问题，T称为模式串。  </p>
+
+<h4 id="section">一、算法简介</h4>
+
+<p>BF(Brute Force)算法，应该很容易写出来，下面先给出伪码： </p>
+
+<ul>
+  <li>1. 首先设定 S 和 T 的起始比较下标 i 和 j；</li>
+  <li>2. 循环直到 i+m&gt;n 或者T中的字符都比较完(j==m)</li>
+  <li>
+    <ul>
+      <li>2.1 如果S[i]==T[j], 继续比较S和T的下一个字符，否则</li>
+    </ul>
+  </li>
+  <li>
+    <ul>
+      <li>2.2 将 i 和 j 回溯，准备下一轮比较</li>
+    </ul>
+  </li>
+  <li>3. 如果T中的字符都比较完(j==m)，则返回比较的起始下标</li>
+  <li>
+    <ul>
+      <li>否则返回-1，表示匹配失败  </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="section-1">二、算法实现</h4>
+
+<pre><code>int strStr(const char *S, const char *T){
+    if(S==NULL||T==NULL) return -1;
+    int n = strlen(S);
+    int m = strlen(T);
+    int i=0;
+    while( i+m&lt;=n){
+        int k=i, j=0;
+        for(; j&lt;m&amp;&amp;k&lt;n&amp;&amp;S[k]==T[j]; ++k,++j) ;
+        if(j==m) return i;  //  匹配成功，返回比较开始位置
+        ++i;
+    }
+    return -1;   // 匹配失败
+}  
+</code></pre>
+
+<h4 id="section-2">三、实例</h4>
+<p>假定给定主串 S=”ababcabcacbab”, 模式 T=”abcac”, BF匹配过程如下：<br />
+<img src="http://imagle.github.io/static/img/bf-strstr-01.png" alt="picture-example-01" />  </p>
+
+<h4 id="bf">四、BF算法的缺点</h4>
+<p>BF算法的优点就是简单可靠，这跟现实中的东西一样，越简单的东西越是信得过的(纯属娱乐:东哥也说了’她是我见过的最单纯的女孩’)，可见简单就是好，而复杂的东西限制要求多。<br />
+BF算法的确定就是一遇到比较失败的时候就需要回退到前面重新开始比较，之前比较匹配过的信息完全用不上，一句话就是不智能嘛。  </p>
+
+<h4 id="bfkmpbm">五、标准库为啥要采用BF而不采用KMP，BM喃？</h4>
+<p>打开上面StackOverflow的链接，就能见着答案，我这里把英文贴出来，为防止有些童鞋一见English就头大，大概翻译了下。  </p>
+
+<blockquote>
+  <p>The more advanced string search algorithms have a non-trivial setup time. If you are doing a once-off string search involving a not-too-large target string, you will find that you spend more time on the setup than you save during the string search.And even just testing the lengths of the target and search string is not going to give a good answer as to whether it is “worth it” to use an advanced algorithm. The actual speedup you get from (say) Boyer-Moore depends on the values of the strings; i.e. the character patterns.<br />
+The Java implementors have take the pragmatic approach. They cannot guarantee that an advanced algorithm will give better performance, either on average, or for specific inputs. Therefore they have left it to the programmer to deal with … where necessary. <br />
+ 大概意思就是，像KMP，BM这些高级算法的会有预处理时间和会消耗一些空间，在处理一些不是非常大的字符串的时候，时间不会有太大优势，而且还会占用一些空间。   </p>
+</blockquote>
+
+<hr />
+<p>我开通了微信公众号–<strong>分享技术之美</strong>，我会不定期的分享一些我学习的东西.<br />
+你可以搜索公众号：<strong>swalge</strong> 或者扫描下方二维码关注我<br />
+<img src="http://imagle.github.io/static/img/photo.jpg" alt="关注" />  </p>
+
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/04/18/string-match-kmp-strstr">字符串匹配之KMP---全力解析</a></h2>
+        <p>
+          Posted by <strong>Jerry</strong> at <strong>2014-04-18</strong> with tags <a href="/tags.html#strstr-ref" rel="nofollow">strstr</a>, <a href="/tags.html#kmp-ref" rel="nofollow">kmp</a>, <a href="/tags.html#algorithm-ref" rel="nofollow">algorithm</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        
+<p>近日，一同学面试被问到字符串匹配算法，结果由于他使用了暴力法，直接就跪了(现在想想这样的面试官真的是不合格的，陈皓的一篇文章说的很好，<a href="http://coolshell.cn/articles/8138.html">点击阅读</a>)。字符串匹配方法大概有：BF(暴力破解法), 简化版的BM，KMP，BM，一般情况下，大家听说最多的应该就是KMP算法了。之前学习过，由于时间间隔比较大，记不太清楚了，今天上网查了下，发现写KMP的文章是不少，但是真正清晰简洁就没有了(july的文章太繁琐)，所以自己就研究了一晚上，弄清楚了kmp的计算过程，也就在此分享下。</p>
+
+<p>首先，如果你现在完全不知道KMP是个神马玩意，请先阅读 阮一峰 的<a href="http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html">《字符串匹配的KMP算法》</a>。</p>
+
+<p>KMP算法最难理解的是就是next数组的计算过程，在此分享下我所理解的kmp算法以及next数组的计算过程(如果看前面理论比较头大，可以先看后面例子的计算过程，在回过头来看理论就会释怀)：  </p>
+
+<h4 id="next">一、next数组的计算过程:</h4>
+<p><strong>申明</strong>:  next数组下标从0算起, 定义next[0]=-1, next[1]=0; 模式串记为T[ ]
+假如求 T中 j+1 位的next[j+1]：<br />
+将其前一位(模式字符)的内容与其前一位的next值(next[j])的内容(T[next[j]])进行比较：</p>
+
+<ul>
+  <li>如果它们相等(T[j]==T[next[j]])，则next[j+1] = next[j]+1;</li>
+  <li>如果他们不相等，则继续向前寻找，直到找到next值对应的内容与前一位相等为止，则在这个next值上加一;</li>
+  <li>如果直到第一位都没有与之相等，则next[j+1] = 0;<br />
+  例: 有模式串 “abaababc”<br />
+  j=0时，next[0] = -1 ; j=1时，next[1] = 0;<br />
+  j=2时，t1!=t0, k=next[0]=-1, next[2]=0;<br />
+  j=3时，t2==t0, next[3] = next[2]+1 = 1;<br />
+  j=4时，k=next[3]=1, t3!=T[1], k=next[1]=0, T[3]==T[0], next[4]=next[1]+1 = 1;<br />
+  j=5时，k=next[4]=1, T[4]==T[1], next[5]=next[4]+1=2;<br />
+  j=6时，k=next[5]=2, T[5]==T[2], next[6]=next[5]+1=3;<br />
+  j=7时，k=next[6]=3, T[6]!=T[3], k=next[3]=1, T[6]==T[1], next[7]=next[3]+1 = 2;<br />
+<img src="http://imagle.github.io/static/img/kmp01.png" alt="picture-example_01" />  </li>
+</ul>
+
+<h4 id="section">二、上述算法的实现</h4>
+
+<pre><code>//update 2014-04-19 10:08  
+void calNext(const char *T, int *next){  
+    int n = strlen(T);  
+    if(n&lt;=0) return ;  
+    next[0] = -1;  
+    next[1] = 0;  
+    int j=0, k=-1;  
+    while(j&lt;n){  
+        if(k==-1 || T[j]==T[k]){  
+            ++j;  
+            ++k;  
+            next[j] = k;  
+        }  
+        else  k = next[k];  
+    }  
+</code></pre>
+
+<h4 id="kmp">三、KMP主算法　　</h4>
+
+<ul>
+  <li>设置比较起始下标: i=0, j=0;</li>
+  <li>循环直到 i+m&gt;n 或者 T中所有字符都以比较完毕</li>
+  <li>如果 S[i]==T[j], 则继续比较S和T的下一个字符; 否则</li>
+  <li>
+    <ul>
+      <li>将 j=next[j]， 从这位置开始继续进行比较;</li>
+    </ul>
+  </li>
+  <li>
+    <ul>
+      <li>如果j==-1, 则将 i 和 j 分别加1, 继续比较；</li>
+    </ul>
+  </li>
+  <li>如果T中所有字符均比较完毕，则返回匹配的起始下标，否则返回-1；　　</li>
+</ul>
+
+<h4 id="kmp-1">四、KMP算法实现:</h4>
+
+<pre><code>//update 2014-04-19 10:08  
+int kmpmatch(const char *S, const char *T){  
+    if(S==NULL || T==NULL) return -1;  
+    int n = strlen(S);  
+    int m = strlen(T);  
+    int next[m];  
+    calNext(T, next);  
+    int i=0, j=0;  
+    while(i+m&lt;=n){  
+        for( ; j&lt;m&amp;&amp;i&lt;n&amp;&amp;S[i]==T[j]; ++i, ++j) ;  
+        if(j==m) return i-m;  
+        j = next[j];  
+        if(j==-1){  
+            ++i;  
+            ++j;  
+        }  
+    }  
+    return -1;  
+}  
+</code></pre>
+
+<p>举例： 设主串 S=”ababcabcacbab”, 模式 T=”abcac”<br />
+按照上述方法计算得next[]={-1,0,0,0,1}<br />
+<img src="http://imagle.github.io/static/img/kmp02.png" alt="picture-example_02" /><br />
+<img src="http://imagle.github.io/static/img/kmp03.png" alt="picture-example_03" />  </p>
+
+<p>本篇文章主要关注next数组的计算及kmp主算法的实现。<br />
+要了解next数组是什么？<br />
+为什么要这么计算next数组?<br />
+参见<a href="http://imagle.github.io/2014/04/19/string-match-bf-strstr/">下一篇文章(字符串匹配之KMP算法（续）—还原next数组 )</a>.  </p>
+
+<hr />
+<p>我开通了微信公众号–<strong>分享技术之美</strong>，我会不定期的分享一些我学习的东西.<br />
+你可以搜索公众号：<strong>swalge</strong> 或者扫描下方二维码关注我<br />
+<img src="http://imagle.github.io/static/img/photo.jpg" alt="关注" />  </p>
+
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+<div class="pagination">
+    <ul>
+    
+        <li class="prev disabled"><a>&larr; Previous</a></li>
+    
+
+    
+
+    
+        <li class="next"><a href="/page2">Next &rarr;</a></li>
+    
+    </ul>
+</div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <wb:follow-button uid="1320295237" type="red_1" width="63" height="24" ></wb:follow-button>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Recent Posts</h3>
+        <ul>
+        
+          <li><span>2014-06-15</span> &raquo; <a href="/2014/06/15/mysql-master-slave-replication">
+            Mysql主从同步</a></li>
+        
+          <li><span>2014-04-23</span> &raquo; <a href="/2014/04/23/Longest-palindrome-substring">
+            最长回文子串的O(n)算法</a></li>
+        
+          <li><span>2014-04-22</span> &raquo; <a href="/2014/04/22/Something-about-Heap-in-STL-of-C++">
+            论C++的STL源码中关于堆算法的那些事</a></li>
+        
+          <li><span>2014-04-21</span> &raquo; <a href="/2014/04/21/How-to-solve-eclipse's-Black-background-of-Prompt-box-in-Ubuntu-12_04">
+            ubuntu12.04中eclipse提示框背景为黑色的解决方法</a></li>
+        
+          <li><span>2014-04-19</span> &raquo; <a href="/2014/04/19/string-match-bf-strstr">
+            字符串匹配之BF---暴力破解法</a></li>
+        
+          <li><span>2014-04-18</span> &raquo; <a href="/2014/04/18/string-match-kmp-strstr">
+            字符串匹配之KMP---全力解析</a></li>
+        
+          <li><span>2013-02-27</span> &raquo; <a href="/2013/02/27/highlight-code-with-google-code-prettify">
+            Jekyll中使用google-code-prettify高亮代码</a></li>
+        
+        </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Tags</h3>
+        <div class="tag_box">
+        
+        
+  
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
+    
+        <a href="/tags.html#代码高亮-ref" class="btn btn-mini">代码高亮 <span>1</span></a>
+    
+        <a href="/tags.html#google-code-prettify-ref" class="btn btn-mini">google-code-prettify <span>1</span></a>
+    
+        <a href="/tags.html#strstr-ref" class="btn btn-mini">strstr <span>2</span></a>
+    
+        <a href="/tags.html#kmp-ref" class="btn btn-mini">kmp <span>1</span></a>
+    
+        <a href="/tags.html#algorithm-ref" class="btn btn-mini">algorithm <span>2</span></a>
+    
+        <a href="/tags.html#brute force-ref" class="btn btn-mini">brute force <span>1</span></a>
+    
+        <a href="/tags.html#eclipse-ref" class="btn btn-mini">eclipse <span>1</span></a>
+    
+        <a href="/tags.html#Ubuntu12.04-ref" class="btn btn-mini">Ubuntu12.04 <span>1</span></a>
+    
+        <a href="/tags.html#background-ref" class="btn btn-mini">background <span>1</span></a>
+    
+        <a href="/tags.html#堆-ref" class="btn btn-mini">堆 <span>1</span></a>
+    
+        <a href="/tags.html#C++-ref" class="btn btn-mini">C++ <span>2</span></a>
+    
+        <a href="/tags.html#STL源码-ref" class="btn btn-mini">STL源码 <span>1</span></a>
+    
+        <a href="/tags.html#算法-ref" class="btn btn-mini">算法 <span>1</span></a>
+    
+        <a href="/tags.html#最长回文子串-ref" class="btn btn-mini">最长回文子串 <span>1</span></a>
+    
+        <a href="/tags.html#Palindromic-ref" class="btn btn-mini">Palindromic <span>1</span></a>
+    
+        <a href="/tags.html#replication-ref" class="btn btn-mini">replication <span>1</span></a>
+    
+        <a href="/tags.html#mysql-ref" class="btn btn-mini">mysql <span>1</span></a>
+    
+  
+
+
+
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Links</h3>
+        <ul>
+        
+        
+    <li><a href=http://www.codingsam.com/ title="code hunter">code hunter</a></li>
+
+    <li><a href=http://coolshell.cn title="陈皓的个人博客">酷壳</a></li>
+
+    <li><a href=http://beiyuu.com title="Beiyuu的个人博客">Beiyuu</a></li>
+
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+</div>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2014 <span id="now_year"></span> Jerry. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2014) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+
