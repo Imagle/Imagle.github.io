@@ -14,19 +14,18 @@ tags: [vim, chrome]
 说明：下面命令中的C均指的是ctrl(windows, linux, mac ox), 例如<C-f>就是同时按下ctrl+f  
 
 1.  __Normal Mode Mapping (nmap)__  
-
     j : ScrollDown  
-    <C-e> : ScrollDown  
+    C-e : ScrollDown  
     k : ScrollUp  
-    <C-y> : ScrollUp  
+    C-y : ScrollUp  
     h : ScrollLeft  
     l : ScrollRight  
-    <C-f> : PageDown  
-    <C-b> : PageUp  
-    <C-d> : PageHalfDown  
-    <C-u> : PageHalfUp  
+    C-f : PageDown  
+    C-b : PageUp  
+    C-d : PageHalfDown  
+    C-u : PageHalfUp  
     gg : GoTop  返回到当前页面顶部  
-    G : GoBottom  返回到当前页面底部 
+    G : GoBottom  返回到当前页面底部  
     t : TabOpenNew  新建一个标签页  
     x : TabCloseCurrent  关闭当前标签页  
     X : TabCloseCurrent --focusprev  关闭当前标签页，并将其之前一个标签页作为活动标签页  
@@ -68,14 +67,12 @@ tags: [vim, chrome]
     <SPACE>tw : TabOpenNew http://www.twitter.com  快速在新标签页打开twitter  
     <SPACE>gr : TabOpenNew http://www.google.com/reader  快速在新标签页打开google reader(现已停用)  
     <SPACE>m : TabOpenNew https://mail.google.com/mail/#inbox  快速在新标签页打开gmail  
-
+    
 2. __Insert Mode Mapping (imap)__  
-
     <ESC> : Escape  
     <C-[> : Escape  
-
+    
 3. __Search/Command Mode Mapping (cmap)__  
-
     <TAB> : FocusNextCandidate  
     <S-TAB> : FocusPrevCandidate   
     <DOWN> : FocusNextCandidate  
@@ -84,7 +81,6 @@ tags: [vim, chrome]
     <C-[> : Escape  
 
 4. __Emergency Mode Mapping (emap)__  
-
     <ESC> : Escape  
 
 5. __Command Aliases (alias)__  
