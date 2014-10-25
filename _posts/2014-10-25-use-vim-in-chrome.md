@@ -7,13 +7,11 @@ tags: [vim, chrome]
 ---
 {% include JB/setup %}
 
-
 ##### 闲扯    
 
    今日推荐一款在chrome上面使用vim的插件Vichrome[下载地址][1], 这款插件非常实用，应该说是非常合各个vimer的胃口，基本的快捷操作都延续了vim的风格，并且支持自定义，相当棒。  
-说明：下面命令中的C均指的是ctrl(windows, linux, mac ox), 例如 C-f 就是同时按下ctrl+f.  
+   说明：下面命令中的C均指的是ctrl(windows, linux, mac ox), 例如 C-f 就是同时按下ctrl+f.  
     
-
 ##### 默认快捷键简介  
 
 1.  __Normal Mode Mapping (nmap)__  
