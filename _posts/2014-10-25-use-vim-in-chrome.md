@@ -71,21 +71,21 @@ tags: [vim, chrome]
 
 2. __Insert Mode Mapping (imap)__  
 
-<ESC> : Escape
-<C-[> : Escape
+    <ESC> : Escape  
+    <C-[> : Escape  
 
 3. __Search/Command Mode Mapping (cmap)__  
 
-<TAB> : FocusNextCandidate
-<S-TAB> : FocusPrevCandidate
-<DOWN> : FocusNextCandidate
-<UP> : FocusPrevCandidate
-<ESC> : Escape
-<C-[> : Escape
+    <TAB> : FocusNextCandidate  
+    <S-TAB> : FocusPrevCandidate   
+    <DOWN> : FocusNextCandidate  
+    <UP> : FocusPrevCandidate  
+    <ESC> : Escape  
+    <C-[> : Escape  
 
 4. __Emergency Mode Mapping (emap)__  
 
-<ESC> : Escape
+    <ESC> : Escape  
 
 5. __Command Aliases (alias)__  
 
