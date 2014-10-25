@@ -11,7 +11,7 @@ tags: [vim, chrome]
 
 ##### 默认快捷键简介  
 
-说明：下面命令中的C均指的是ctrl(windows, linux, mac ox), 例如<C-f>就是同时按下ctrl+f  
+说明：下面命令中的C均指的是ctrl(windows, linux, mac ox), 例如 C-f 就是同时按下ctrl+f.  
 
 1.  __Normal Mode Mapping (nmap)__  
     j : ScrollDown  
@@ -33,8 +33,8 @@ tags: [vim, chrome]
     N : PrevSearch  搜索关键词的上一个出现的位置  
     gt : TabFocusNext  当前标签页的下一个标签  
     gT : TabFocusPrev  当前标签页的上一个标签  
-    <C-l> : TabFocusNext  同gt  
-    <C-h> : TabFocusPrev  同gT  
+    C-l : TabFocusNext  同gt  
+    C-h : TabFocusPrev  同gT  
     r : TabReload  重新加载当前页面  
     H : BackHist  在当前页面后退  
     L : ForwardHist  在当前页面前进  
@@ -59,32 +59,27 @@ tags: [vim, chrome]
     b : Open -b  在当前标签页中打开在命令行中输入的书签地址  
     B : TabOpenNew -b  在新标签页中打开在命令行中输入的书签地址  
     '' : BackToPageMark  
-    <C-^> : TabSwitchLast  转到当前窗口的最后一个标签页  
-    <C-ESC> : GoEmergencyMode  
-    <ESC> : Escape  回到普通模式,并清除之前的所有操作记录  
-    <C-[> : Escape  同上  
+    C-^ : TabSwitchLast  转到当前窗口的最后一个标签页  
+    C-ESC : GoEmergencyMode  
+    _ESC_ : Escape  回到普通模式,并清除之前的所有操作记录  
+    C-[ : Escape  同上  
     ,z : ToggleImageSize  
-    <SPACE>tw : TabOpenNew http://www.twitter.com  快速在新标签页打开twitter  
-    <SPACE>gr : TabOpenNew http://www.google.com/reader  快速在新标签页打开google reader(现已停用)  
-    <SPACE>m : TabOpenNew https://mail.google.com/mail/#inbox  快速在新标签页打开gmail  
-    
+    SPACE+tw : TabOpenNew http://www.twitter.com  快速在新标签页打开twitter  
+    SPACE+gr : TabOpenNew http://www.google.com/reader  快速在新标签页打开google reader(现已停用)  
+    SPACE+m : TabOpenNew https://mail.google.com/mail/#inbox  快速在新标签页打开gmail  
 2. __Insert Mode Mapping (imap)__  
-    <ESC> : Escape  
-    <C-[> : Escape  
-    
+    _ESC_ : Escape  
+    C-[ : Escape  
 3. __Search/Command Mode Mapping (cmap)__  
-    <TAB> : FocusNextCandidate  
-    <S-TAB> : FocusPrevCandidate   
-    <DOWN> : FocusNextCandidate  
-    <UP> : FocusPrevCandidate  
-    <ESC> : Escape  
-    <C-[> : Escape  
-
+    TAB : FocusNextCandidate  
+    S-TAB : FocusPrevCandidate   
+    DOWN : FocusNextCandidate  
+    UP : FocusPrevCandidate  
+    _ESC_ : Escape  
+    C-[ : Escape  
 4. __Emergency Mode Mapping (emap)__  
-    <ESC> : Escape  
-
+    ESC : Escape  
 5. __Command Aliases (alias)__  
-
     o : Open  
     ot : TabOpenNew  
     opt : OpenOptionPage  
