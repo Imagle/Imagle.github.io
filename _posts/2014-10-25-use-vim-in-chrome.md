@@ -14,56 +14,55 @@ tags: [vim, chrome]
 说明：下面命令中的C均指的是ctrl(windows, linux, mac ox), 例如 C-f 就是同时按下ctrl+f.  
 
 1.  __Normal Mode Mapping (nmap)__  
-    
-    j : ScrollDown  
-    C-e : ScrollDown  
-    k : ScrollUp  
-    C-y : ScrollUp  
-    h : ScrollLeft  
-    l : ScrollRight  
-    C-f : PageDown  
-    C-b : PageUp  
-    C-d : PageHalfDown  
-    C-u : PageHalfUp  
-    gg : GoTop  返回到当前页面顶部  
-    G : GoBottom  返回到当前页面底部  
-    t : TabOpenNew  新建一个标签页  
-    x : TabCloseCurrent  关闭当前标签页  
-    X : TabCloseCurrent --focusprev  关闭当前标签页，并将其之前一个标签页作为活动标签页  
-    n : NextSearch  搜索关键词的下一个出现的位置  
-    N : PrevSearch  搜索关键词的上一个出现的位置  
-    gt : TabFocusNext  当前标签页的下一个标签  
-    gT : TabFocusPrev  当前标签页的上一个标签  
-    C-l : TabFocusNext  同gt  
-    C-h : TabFocusPrev  同gT  
-    r : TabReload  重新加载当前页面  
-    H : BackHist  在当前页面后退  
-    L : ForwardHist  在当前页面前进  
-    : : GoCommandMode  打开命令模式  
-    / : GoSearchModeForward  进入搜索模式--从页面当前位置开始到页面底部  
-    ? : GoSearchModeBackward  进入搜索模式--从页面当前位置开始到页面顶部  
-    a : GoLinkTextSearchMode  
-    f : GoFMode  进入选择模式  
-    F : GoFMode --newtab  进入选择模式，但在新标签页打开所选链接  
-    ; : GoExtFMode  搜索  
-    i : FocusOnFirstInput  将光标指向页面的第一个输入位置  
-    u : RestoreTab  恢复之前关闭的标签  
-    gp : WinOpenNew --pop  在新窗口中打开当前标签页  
-    gs : TabOpenNew --next view-source:%url  查看当前页面的源码  
-    yy : copyurl  复制当前页面的url到剪切板  
-    p : Open %clipboard  在当前标签页中打开剪切板中的链接  
-    P : TabOpenNew %clipboard  在当前标签页中打开剪切板中的链接  
-    o : Open -i  在当前标签页中打开在命令行中输入的链接地址  
-    O : TabOpenNew -i  在新标签页中打开在命令行中输入的链接地址  
-    s : Open -i g  在当前标签页打开在命令行中输入关键字的搜索结果(默认是google)  
-    S : TabOpenNew -i g  在新标签页打开在命令行中输入关键字的搜索结果(默认是google)  
-    b : Open -b  在当前标签页中打开在命令行中输入的书签地址  
-    B : TabOpenNew -b  在新标签页中打开在命令行中输入的书签地址  
-    '' : BackToPageMark  
-    C-^ : TabSwitchLast  转到当前窗口的最后一个标签页  
-    C-ESC : GoEmergencyMode  
+    _j_ : ScrollDown  
+    _C-e_ : ScrollDown  
+    _k_ : ScrollUp  
+    _C-y_ : ScrollUp  
+    _h_ : ScrollLeft  
+    _l_ : ScrollRight  
+    _C-f_ : PageDown  
+    _C-b_ : PageUp  
+    _C-d_ : PageHalfDown  
+    _C-u_ : PageHalfUp  
+    _gg_ : GoTop  返回到当前页面顶部  
+    _G_ : GoBottom  返回到当前页面底部  
+    _t_ : TabOpenNew  新建一个标签页  
+    _x_ : TabCloseCurrent  关闭当前标签页  
+    _X_ : TabCloseCurrent --focusprev  关闭当前标签页，并将其之前一个标签页作为活动标签页  
+    _n_ : NextSearch  搜索关键词的下一个出现的位置  
+    _N_ : PrevSearch  搜索关键词的上一个出现的位置  
+    _gt_ : TabFocusNext  当前标签页的下一个标签  
+    _gT_ : TabFocusPrev  当前标签页的上一个标签  
+    _C-l_ : TabFocusNext  同gt  
+    _C-h_ : TabFocusPrev  同gT  
+    _r_ : TabReload  重新加载当前页面  
+    _H_ : BackHist  在当前页面后退  
+    _L_ : ForwardHist  在当前页面前进  
+    _:_ : GoCommandMode  打开命令模式  
+    _/_ : GoSearchModeForward  进入搜索模式--从页面当前位置开始到页面底部  
+    _?_ : GoSearchModeBackward  进入搜索模式--从页面当前位置开始到页面顶部  
+    _a_ : GoLinkTextSearchMode  
+    _f_ : GoFMode  进入选择模式  
+    _F_ : GoFMode --newtab  进入选择模式，但在新标签页打开所选链接  
+    _;_ : GoExtFMode  搜索  
+    _i_ : FocusOnFirstInput  将光标指向页面的第一个输入位置  
+    _u_ : RestoreTab  恢复之前关闭的标签  
+    _gp_ : WinOpenNew --pop  在新窗口中打开当前标签页  
+    _gs_ : TabOpenNew --next view-source:%url  查看当前页面的源码  
+    _yy_ : copyurl  复制当前页面的url到剪切板  
+    _p_ : Open %clipboard  在当前标签页中打开剪切板中的链接  
+    _P_ : TabOpenNew %clipboard  在当前标签页中打开剪切板中的链接  
+    _o_ : Open -i  在当前标签页中打开在命令行中输入的链接地址  
+    _O_ : TabOpenNew -i  在新标签页中打开在命令行中输入的链接地址  
+    _s_ : Open -i g  在当前标签页打开在命令行中输入关键字的搜索结果(默认是google)  
+    _S_ : TabOpenNew -i g  在新标签页打开在命令行中输入关键字的搜索结果(默认是google)  
+    _b_ : Open -b  在当前标签页中打开在命令行中输入的书签地址  
+    _B_ : TabOpenNew -b  在新标签页中打开在命令行中输入的书签地址  
+    _''_ : BackToPageMark  
+    _C-^_ : TabSwitchLast  转到当前窗口的最后一个标签页  
+    _C-ESC_ : GoEmergencyMode  
     _ESC_ : Escape  回到普通模式,并清除之前的所有操作记录  
-    C-[ : Escape  同上  
+    _C-[_ : Escape  同上  
     ,z : ToggleImageSize  
     SPACE+tw : TabOpenNew http://www.twitter.com  快速在新标签页打开twitter  
     SPACE+gr : TabOpenNew http://www.google.com/reader  快速在新标签页打开google reader(现已停用)  
