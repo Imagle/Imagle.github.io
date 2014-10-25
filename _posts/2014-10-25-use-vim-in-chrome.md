@@ -14,6 +14,7 @@ tags: [vim, chrome]
 说明：下面命令中的C均指的是ctrl(windows, linux, mac ox), 例如 C-f 就是同时按下ctrl+f.  
 
 1.  __Normal Mode Mapping (nmap)__  
+    
     j : ScrollDown  
     C-e : ScrollDown  
     k : ScrollUp  
